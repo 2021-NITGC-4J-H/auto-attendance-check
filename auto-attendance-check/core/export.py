@@ -6,10 +6,11 @@ from enum import Enum
 import csv
 import json
 
+
 class AttendanceState(Enum):
     """
     出席の正体を表す列挙体
-    
+
     Attributs
     ---------
     ABSENCE : str
@@ -73,7 +74,14 @@ class ClassRegister():
         データをどう持つべきか
         """
         self.file_path = ""
-        self.data = [ { "student number": students_number, "name": "", "attendance state": AttendanceState.ERROR.value } for students_number in range(1, number_of_students + 1)]
+        self.data = [
+            {
+                "student number": students_number,
+                "name": "",
+                "attendance state": AttendanceState.ERROR.value
+            }
+            for students_number in range(1, number_of_students + 1)
+        ]
         pass
 
     def exprot_csv(self) -> None:
@@ -89,7 +97,10 @@ class ClassRegister():
         書き出すファイルのエンコードはutf-8
         """
         with open(f"{self.file_path}.csv", mode="w", encoding="utf-8") as file:
-            writer = csv.DictWriter(file, ["student number", "name", "attendance state"])
+            writer = csv.DictWriter(
+                file,
+                ["student number", "name", "attendance state"]
+            )
             writer.writeheader()
             for parson in self.data:
                 writer.writerows(parson)
@@ -106,5 +117,9 @@ class ClassRegister():
         -----
         書き出すファイルのエンコードはutf-8
         """
-        with open(f"{self.file_path}.json", mode="w", encoding="utf-8") as file:
+        with open(
+            f"{self.file_path}.json",
+            mode="w",
+            encoding="utf-8"
+        ) as file:
             json.dump(self.data, file, ensure_ascii=False, indent=4)

@@ -1,18 +1,19 @@
-from core.export import *
+from core.export import ClassRegister, AttendanceState
+
 
 def test_init():
-	cr = ClassRegister(1)
-	assert(
-		cr.data,
-		{
-			"student number": 1,
-			"name": "",
-			"attendance state": AttendanceState.ERROR.value
-		}
-	)
+    cr = ClassRegister(1)
+    test_data = {
+        "student number": 1,
+        "name": "",
+        "attendance state": AttendanceState.ERROR.value
+    }
+    assert(cr.data == test_data)
+
 
 def test_export_csv():
-	pass
+    pass
+
 
 def test_export_json():
-	pass
+    pass
