@@ -80,6 +80,10 @@ class ClassRegister():
         """
         csv形式でデータをエクスポートする
 
+        Todo
+        ----
+        文字列での出力にも対応させる
+
         Notes
         -----
         書き出すファイルのエンコードはutf-8
@@ -93,6 +97,10 @@ class ClassRegister():
     def export_json(self) -> None:
         """
         json形式でデータをエクスポートする
+
+        Todo
+        ----
+        文字列での出力にも対応させる
 
         Notes
         -----
