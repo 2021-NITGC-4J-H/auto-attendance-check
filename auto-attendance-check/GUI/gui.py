@@ -1,5 +1,4 @@
 #Use under Python3.8
-
 import tkinter as tk
 from tkinter import Canvas, ttk
 from pathlib import Path
