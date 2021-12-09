@@ -136,8 +136,3 @@ Conf_button.pack(padx=5, pady=10, side=tk.LEFT)
 # show main window
 if __name__ == "__main__":
     window.mainloop()
-
-#make window
-window = Tk()
-window.title('MANIPLATION')
-window.getometry("1000x750")
