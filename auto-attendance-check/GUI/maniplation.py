@@ -10,7 +10,7 @@ class Maniplation():
         powershellを開き、出席データを格納している機器へアクセス
         
         """
-        None
+        pass
 
     def TakePhotoCom():
         """
@@ -23,17 +23,17 @@ class Maniplation():
         →ラズパイへ画像解析を命令
         →ラズパイとのSSH接続を終了
         """
-        None
+        pass
 
     def SetTimetable():
         """
         「時間割」button was pushed
         """
-        None
+        pass
 
     def Configuration():
         """
         「設定」button was pushed
         Notes
         """
-        None
+        pass
