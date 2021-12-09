@@ -1,15 +1,21 @@
 #Use under Python3.8
+<<<<<<< HEAD
 import tkinter as tk
 from tkinter import Canvas, ttk
 from pathlib import Path
 from tkinter.constants import BOTH, E, FLAT, GROOVE, LEFT, NE, NW, RAISED, RIDGE, RIGHT, SE, SOLID, SW, TOP, W, X, Y
 from maniplation import Maniplation
+=======
+from tkinter import *
+from pathlib import Path
+>>>>>>> main
 
 #Add tkdesigner to path
 
 #Path to asset files for this GUI window.
 ASSETS_PATH = Path(__file__).resolve().parent / "assets"
 
+<<<<<<< HEAD
 # set up main window
 window = tk.Tk()
 window.title('MANIPLATION')
@@ -136,3 +142,13 @@ Conf_button.pack(padx=5, pady=10, side=tk.LEFT)
 # show main window
 if __name__ == "__main__":
     window.mainloop()
+=======
+#make window
+window = Tk()
+window.title('MANIPLATION')
+window.getometry("1000x750")
+
+
+#show window
+window.mainloop()
+>>>>>>> main
