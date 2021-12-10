@@ -136,7 +136,6 @@ Configuration_button.pack(padx=5, pady=10, side=tk.LEFT)
 # show main window
 if __name__ == "__main__":
     window.mainloop()
-=======
 # set up main window
 window = tk.Tk()
 window.title('MANIPLATION')
