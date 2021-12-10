@@ -1,26 +1,24 @@
-#Use under Python3.8
+# GUI main file
+# Use under Python3.8
 import tkinter as tk
 from tkinter import Canvas, ttk
 from pathlib import Path
 from tkinter.constants import BOTH, E, FLAT, GROOVE, LEFT, NE, NW, RAISED, RIDGE, RIGHT, SE, SOLID, SW, TOP, W, X, Y
-from maniplation import Maniplation
-
-#Add tkdesigner to path
+import maniplation as Maniplation
 
 #Path to asset files for this GUI window.
 ASSETS_PATH = Path(__file__).resolve().parent / "assets"
 
-# set up main window
+# main window の作成
 window = tk.Tk()
 window.title('MANIPLATION')
 window.geometry("815x950")
-#window.geometry("2000x2000")
 
-# set up main frame
+# main frame の作成
 frame = ttk.Frame(window)
 frame.pack(fill = tk.BOTH)
 
-# make widgets
+# Canvas の作成
 background = tk.PhotoImage(file="AI.png")
 canvas = tk.Canvas(
     window,
@@ -29,11 +27,11 @@ canvas = tk.Canvas(
     scrollregion=(0, 0, 1080, 1260)
 )
 
+# Canvas上に配置するframeの作成
 frame_canvas = tk.Frame(canvas, background='#999999')
 canvas.create_window((0,0), window=frame_canvas, anchor=tk.NW)
 canvas.create_image(377, 540, image=background)
 canvas.pack()
-#canvas.grid(row=0, column=0)
 
 # 水平方向のスクロールバーを作成
 xbar = tk.Scrollbar(
