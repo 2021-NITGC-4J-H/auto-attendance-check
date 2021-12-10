@@ -29,11 +29,15 @@ def ConnectSSH(IP_ADDRESS, USER_NAME, PASSWORD, CMD):
         password=PASSWORD
     )
 
+    cmr = ''
     for cmd in CMD:
         stdin, stdout, stderr = client.exec_command(cmd)
         for line in stdout:
-            print(line)
+            cmr += str(line)
+        
+    print(cmr)
 
     client.close()
-    del client, stdin, stdout, stderr
+    del client
+    return cmr
 
