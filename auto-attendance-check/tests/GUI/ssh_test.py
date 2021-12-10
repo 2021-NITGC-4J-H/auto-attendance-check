@@ -1,6 +1,9 @@
 # test ssh.py
+import sys
+import os
+from GUI.ssh import ConnectSSH
 
-from core.ssh import ConnectSSH
+sys.path.append("../../..")
 
 if __name__ == "__main__":
     ssh.ConnectSSH(
