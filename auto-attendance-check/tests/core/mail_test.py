@@ -5,34 +5,29 @@ sys.path.append("../../..")
 
 
 def test_check_mailaddress():
-    try:
-        check_mailaddres("a12345@gunma.kosen-ac.jp")
-        assert True
-    except ValueError as e:
-        assert False
+    pass_case = [
+        "a12345@gunma.kosen-ac.jp",
+        "a12345@outlook.com",
+        "a-123.456@gmail.com",
+    ]
 
-    try:
-        check_mailaddres("a12345@outlook.com")
-        assert True
-    except ValueError as e:
-        assert False
+    for case in pass_case:
+        try:
+            check_mailaddres(case)
+            assert True
+        except ValueError:
+            assert False
 
-    try:
-        check_mailaddres("a-123.456@gmail.com")
-        assert True
-    except ValueError as e:
-        assert False
+    error_case = [
+        "a-12345",
+        " a12345@outlook.com",
+    ]
 
-    try:
-        check_mailaddres("a-12345")
-        assert False
-    except ValueError as e:
-        assert True
-
-    try:
-        check_mailaddres(" a12345@outlook.com")
-        assert False
-    except ValueError as e:
-        assert True
+    for case in error_case:
+        try:
+            check_mailaddres(case)
+            assert False
+        except ValueError:
+            assert True
 
     assert True

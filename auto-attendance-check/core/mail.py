@@ -40,7 +40,7 @@ def send_mail(to: str):
     """
     check_mailaddres(to)
 
-    mail_sender = toml.load(open("auto-attendance-check\core\mail_secret.toml"))
+    mail_sender = toml.load(open("auto-attendance-check/core/mail_secret.toml"))
 
     smtp_host = "smtp.live.com"
     smtp_port = 587
@@ -86,6 +86,6 @@ def check_mailaddres(to: str):
     ValueError
         値がメールアドレスとして正しくない
     """
-    mail_pattarn = "^[a-zA-Z0-9_+-]+(.[a-zA-Z0-9_+-]+)*@([a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]*\.)+[a-zA-Z]{2,}$"
-    if re.match(pattern=mail_pattarn, string=to) == None:
+    mail_pattarn = r"^[a-zA-Z0-9_+-]+(.[a-zA-Z0-9_+-]+)*@([a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]*\.)+[a-zA-Z]{2,}$"
+    if re.match(pattern=mail_pattarn, string=to) is None:
         raise ValueError("メールアドレスの値が正しくありません")
