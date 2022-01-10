@@ -1,6 +1,8 @@
+# GUI main file
 # Use under Python3.8
 import tkinter as tk
-from tkinter import ttk
+
+# from tkinter import Canvas, ttk
 from pathlib import Path
 from tkinter.constants import (
     NE,
@@ -9,32 +11,41 @@ from tkinter.constants import (
     X,
     Y,
 )
-from maniplation import Maniplation
-
-# Add tkdesigner to path
+import maniplation as man
+import sub_frame
+import owner
 
 # Path to asset files for this GUI window.
 ASSETS_PATH = Path(__file__).resolve().parent / "assets"
 
-# set up main window
+# main window の作成
 window = tk.Tk()
 window.title("MANIPLATION")
-window.geometry("815x950")
-# window.geometry("2000x2000")
+window.geometry("815x680")
+window.grid_rowconfigure(0, weight=1)
+window.grid_columnconfigure(0, weight=1)
 
-# set up main frame
-frame = ttk.Frame(window)
-frame.pack(fill=tk.BOTH)
+"""----------------------------------------------------"""
+""" main frame 作成部 """
 
-# make widgets
+# main frame の作成
+frame = tk.Frame(window)
+frame.grid(row=0, column=0, sticky="nsew")
+
+# app frameの作成
+frame_app = tk.Frame(frame)
+frame_app.pack(fill=tk.BOTH)
+
+
+# Canvas の作成
 background = tk.PhotoImage(file="AI.png")
-canvas = tk.Canvas(window, width=754, height=1080, scrollregion=(0, 0, 1080, 1260))
+canvas = tk.Canvas(frame, width=754, height=1080, scrollregion=(0, 0, 1080, 1260))
 
-frame_canvas = tk.Frame(canvas, background="#999999")
+# Canvas上に配置するframeの作成
+frame_canvas = tk.Frame(canvas, background="#000000")
 canvas.create_window((0, 0), window=frame_canvas, anchor=tk.NW)
 canvas.create_image(377, 540, image=background)
-canvas.pack()
-# canvas.grid(row=0, column=0)
+
 
 # 水平方向のスクロールバーを作成
 xbar = tk.Scrollbar(frame, orient=tk.HORIZONTAL)
@@ -48,6 +59,8 @@ xbar.pack(anchor=NW, fill=X, side=tk.BOTTOM)
 # キャンバスの右に垂直方向のスクロールバーを配置
 ybar.pack(anchor=NE, fill=Y, side=tk.RIGHT)
 
+# canvasの配置
+canvas.pack()
 
 # スクロールバーのスライダーが動かされた時の処理
 xbar.config(command=canvas.xview)
@@ -57,13 +70,13 @@ ybar.config(command=canvas.yview)
 canvas.config(xscrollcommand=xbar.set)
 canvas.config(yscrollcommand=ybar.set)
 
-
 # Canvasの位置の初期化
 canvas.yview_moveto(0)
 canvas.xview_moveto(0)
 
+# buttonの作成と設置
 RefAttendData_button = tk.Button(
-    frame,
+    frame_app,
     text="出席状況",
     borderwidth=10,
     padx=40,
@@ -72,11 +85,13 @@ RefAttendData_button = tk.Button(
     height=2,
     relief=RAISED,
     cursor="hand2",
-    command=Maniplation.RefAttendData,
+    command=man.RefAttendData,
 )
+RefAttendData_button.pack(padx=5, pady=10, side=tk.LEFT)
 
+# buttonの作成と設置
 TakePhotoCom_button = tk.Button(
-    frame,
+    frame_app,
     text="教室撮影",
     borderwidth=10,
     padx=40,
@@ -85,11 +100,13 @@ TakePhotoCom_button = tk.Button(
     height=2,
     relief=RAISED,
     cursor="hand2",
-    command=Maniplation.TakePhotoCom,
+    command=man.TakePhotoCom,
 )
+TakePhotoCom_button.pack(padx=5, pady=10, side=tk.LEFT)
 
-SetTimetable_button = tk.Button(
-    frame,
+# buttonの作成と設置
+Timetable_button = tk.Button(
+    frame_app,
     text="時間割",
     borderwidth=10,
     padx=40,
@@ -98,11 +115,14 @@ SetTimetable_button = tk.Button(
     height=2,
     relief=RAISED,
     cursor="hand2",
-    command=Maniplation.SetTimetable,
+    command=lambda: sub_frame.subFrame(window, frame)
+    # command=changeSubFrame
 )
+Timetable_button.pack(padx=5, pady=10, side=tk.LEFT)
 
+# buttonの作成と設置
 Configuration_button = tk.Button(
-    frame,
+    frame_app,
     text="設定",
     borderwidth=10,
     padx=40,
@@ -111,14 +131,18 @@ Configuration_button = tk.Button(
     height=2,
     relief=RAISED,
     cursor="hand2",
-    command=Maniplation.Configuration,
+    command=lambda: man.Configuration(my_configuration),
 )
-
-# set widgets
-RefAttendData_button.pack(padx=5, pady=10, side=tk.LEFT)
-TakePhotoCom_button.pack(padx=5, pady=10, side=tk.LEFT)
-SetTimetable_button.pack(padx=5, pady=10, side=tk.LEFT)
 Configuration_button.pack(padx=5, pady=10, side=tk.LEFT)
+
+# frame_timetable 作成部
+subFrame = sub_frame.subFrame(window, frame)
+
+# 個人用設定クラス作成
+my_configuration = owner.owner()
+
+# frameを前面にする
+frame.tkraise()
 
 # show main window
 if __name__ == "__main__":
