@@ -4,11 +4,11 @@ import maniplation as man
 """ frame_timetable 作成部 """
 
 
-def changeMainFrame(frame: tk.Frame):
+def change_main_frame(frame: tk.Frame):
     frame.tkraise()
 
 
-class subFrame(tk.Frame):
+class SubFrame(tk.Frame):
     def __init__(self, window: tk.Tk, frame: tk.Frame):
         super().__init__(window, width=754, height=680)
 
@@ -21,7 +21,7 @@ class subFrame(tk.Frame):
         )
         button_change.pack()
 
-        SetTimetable_button = tk.Button(
+        set_timetable_button = tk.Button(
             self,
             text="時間割の新規登録",
             # image=new_table_img,
@@ -32,12 +32,12 @@ class subFrame(tk.Frame):
             height=2,
             relief=tk.RAISED,
             cursor="hand2",
-            command=man.SetTimetable,
+            command=man.set_timetable,
         )
 
-        SetTimetable_button.pack(padx=5, pady=10, side=tk.TOP)
+        set_timetable_button.pack(padx=5, pady=10, side=tk.TOP)
 
-        SetCalender_button = tk.Button(
+        set_calender_button = tk.Button(
             self,
             text="時間割の指定",
             borderwidth=10,
@@ -47,11 +47,11 @@ class subFrame(tk.Frame):
             height=2,
             relief=tk.RAISED,
             cursor="hand2",
-            command=man.SetCalender,
+            command=man.set_calender,
         )
-        SetCalender_button.pack(padx=5, pady=10, side=tk.TOP)
+        set_calender_button.pack(padx=5, pady=10, side=tk.TOP)
 
-        LookTimetable_button = tk.Button(
+        look_timetable_button = tk.Button(
             self,
             text="時間割を見る",
             borderwidth=10,
@@ -61,8 +61,8 @@ class subFrame(tk.Frame):
             height=2,
             relief=tk.RAISED,
             cursor="hand2",
-            command=man.LookTimetable,
+            command=man.look_timetable,
         )
-        LookTimetable_button.pack(padx=5, pady=10, side=tk.TOP)
+        look_timetable_button.pack(padx=5, pady=10, side=tk.TOP)
 
         self.grid(row=0, column=0, sticky="nsew")

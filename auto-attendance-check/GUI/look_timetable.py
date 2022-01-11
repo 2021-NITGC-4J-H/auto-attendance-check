@@ -6,19 +6,19 @@ import os
 import timetable_frame
 
 
-class look_timetable(tk.Frame):
+class LookTimetable(tk.Frame):
     """
     mainframeの「時間割」 -> subframeの「時間割を見る」
     ボタンが押された時に作成するフレーム
     """
 
-    def __init__(self, newWindow: tk.Toplevel):
-        super().__init__(newWindow, width=754, height=1080)
+    def __init__(self, new_window: tk.Toplevel):
+        super().__init__(new_window, width=754, height=1080)
 
-        self.toplevel = newWindow
+        self.toplevel = new_window
 
         # 時間割フォルダ内のファイル情報を取得する
-        path_list, name_list, num = self.filesearch("./class_table")
+        path_list, name_list, num = self.file_search("./class_table")
 
         self.titlelabel = tk.Label(self, text="クリックした時間割を表示します")
         self.titlelabel.place(x=300, y=30)
@@ -39,7 +39,7 @@ class look_timetable(tk.Frame):
                     tk.Button(
                         self,
                         text="表示",
-                        command=lambda: self.LookTable(self.name_text[0].get()),
+                        command=lambda: self.look_table(self.name_text[0].get()),
                     )
                 )
             elif i == 1:
@@ -47,7 +47,7 @@ class look_timetable(tk.Frame):
                     tk.Button(
                         self,
                         text="表示",
-                        command=lambda: self.LookTable(self.name_text[1].get()),
+                        command=lambda: self.look_table(self.name_text[1].get()),
                     )
                 )
             elif i == 2:
@@ -55,7 +55,7 @@ class look_timetable(tk.Frame):
                     tk.Button(
                         self,
                         text="表示",
-                        command=lambda: self.LookTable(self.name_text[2].get()),
+                        command=lambda: self.look_table(self.name_text[2].get()),
                     )
                 )
             elif i == 3:
@@ -63,7 +63,7 @@ class look_timetable(tk.Frame):
                     tk.Button(
                         self,
                         text="表示",
-                        command=lambda: self.LookTable(self.name_text[3].get()),
+                        command=lambda: self.look_table(self.name_text[3].get()),
                     )
                 )
 
@@ -82,13 +82,13 @@ class look_timetable(tk.Frame):
             height=2,
             relief=tk.RAISED,
             cursor="hand2",
-            command=newWindow.destroy,
+            command=new_window.destroy,
         )
         self.finish_button.place(x=600, y=900)
 
         self.grid(row=0, column=0, sticky="nsew")
 
-    def filesearch(self, dir: str):
+    def file_search(self, dir: str):
         """
         引数に指定したディレクトリ配下のファイルを探す関数
 
@@ -113,7 +113,7 @@ class look_timetable(tk.Frame):
         num = num - 1
         return path_list, name_list, num
 
-    def LookTable(self, tablename: str):
+    def look_table(self, tablename: str):
         """
         時間割を表示(編集)する
 
@@ -122,7 +122,7 @@ class look_timetable(tk.Frame):
             Failure -> -1
         """
 
-        editFrame = timetable_frame.timetableFrame(self.toplevel)
+        edit_frame = timetable_frame.TimetableFrame(self.toplevel)
 
         # 指定された時間割の内容を取得
         try:
@@ -134,17 +134,17 @@ class look_timetable(tk.Frame):
             print(e)
             return -1
 
-        textname = data[0].split("\n")
+        text_name = data[0].split("\n")
 
-        editFrame.name_text.insert(0, textname[0])
+        edit_frame.name_text.insert(0, text_name[0])
 
         for i in range(0, int(data[1])):
             time = data[2 + (i * 2)].split()
-            editFrame.start_hour[i].set(time[0])
-            editFrame.start_min[i].set(time[1])
+            edit_frame.start_hour[i].set(time[0])
+            edit_frame.start_min[i].set(time[1])
 
             time = data[2 + (i * 2 + 1)].split()
-            editFrame.end_hour[i].set(time[0])
-            editFrame.end_min[i].set(time[1])
+            edit_frame.end_hour[i].set(time[0])
+            edit_frame.end_min[i].set(time[1])
 
         pass

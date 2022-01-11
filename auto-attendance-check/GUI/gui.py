@@ -11,12 +11,9 @@ from tkinter.constants import (
     X,
     Y,
 )
-import maniplation as man
+import maniplation
 import sub_frame
 import owner
-
-# Path to asset files for this GUI window.
-ASSETS_PATH = Path(__file__).resolve().parent / "assets"
 
 # main window の作成
 window = tk.Tk()
@@ -75,7 +72,7 @@ canvas.yview_moveto(0)
 canvas.xview_moveto(0)
 
 # buttonの作成と設置
-RefAttendData_button = tk.Button(
+reference_attend_data_button = tk.Button(
     frame_app,
     text="出席状況",
     borderwidth=10,
@@ -85,12 +82,12 @@ RefAttendData_button = tk.Button(
     height=2,
     relief=RAISED,
     cursor="hand2",
-    command=man.RefAttendData,
+    command=maniplation.reference_attend_data
 )
-RefAttendData_button.pack(padx=5, pady=10, side=tk.LEFT)
+reference_attend_data_button.pack(padx=5, pady=10, side=tk.LEFT)
 
 # buttonの作成と設置
-TakePhotoCom_button = tk.Button(
+take_photo_command_button = tk.Button(
     frame_app,
     text="教室撮影",
     borderwidth=10,
@@ -100,12 +97,12 @@ TakePhotoCom_button = tk.Button(
     height=2,
     relief=RAISED,
     cursor="hand2",
-    command=man.TakePhotoCom,
+    command=maniplation.take_photo_command
 )
-TakePhotoCom_button.pack(padx=5, pady=10, side=tk.LEFT)
+take_photo_command_button.pack(padx=5, pady=10, side=tk.LEFT)
 
 # buttonの作成と設置
-Timetable_button = tk.Button(
+timetable_button = tk.Button(
     frame_app,
     text="時間割",
     borderwidth=10,
@@ -115,13 +112,13 @@ Timetable_button = tk.Button(
     height=2,
     relief=RAISED,
     cursor="hand2",
-    command=lambda: sub_frame.subFrame(window, frame)
+    command=lambda: sub_frame.SubFrame(window, frame)
     # command=changeSubFrame
 )
-Timetable_button.pack(padx=5, pady=10, side=tk.LEFT)
+timetable_button.pack(padx=5, pady=10, side=tk.LEFT)
 
 # buttonの作成と設置
-Configuration_button = tk.Button(
+configuration_button = tk.Button(
     frame_app,
     text="設定",
     borderwidth=10,
@@ -131,15 +128,15 @@ Configuration_button = tk.Button(
     height=2,
     relief=RAISED,
     cursor="hand2",
-    command=lambda: man.Configuration(my_configuration),
+    command=lambda: maniplation.configuration(my_configuration),
 )
-Configuration_button.pack(padx=5, pady=10, side=tk.LEFT)
+configuration_button.pack(padx=5, pady=10, side=tk.LEFT)
 
 # frame_timetable 作成部
-subFrame = sub_frame.subFrame(window, frame)
+sub_frame.SubFrame(window, frame)
 
 # 個人用設定クラス作成
-my_configuration = owner.owner()
+my_configuration = owner.Owner()
 
 # frameを前面にする
 frame.tkraise()

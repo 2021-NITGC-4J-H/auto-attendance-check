@@ -3,7 +3,7 @@
 import toml
 
 
-class owner:
+class Owner:
     """
     「個人用設定」情報をまとめたクラス
     """
@@ -17,7 +17,7 @@ class owner:
         self.classname = data["classname"]
         self.interval = int(data["interval"])
 
-    def Update(
+    def update(
         self,
         username: str = "",
         schoolname: str = "",

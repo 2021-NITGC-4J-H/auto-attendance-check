@@ -3,7 +3,7 @@
 import paramiko
 
 
-def ConnectSSH(IP_ADDRESS, USER_NAME, PASSWORD, CMD):
+def connect_SSH(IP_ADDRESS, USER_NAME, PASSWORD, CMD):
     """
     指定機器へSSH接続する
 

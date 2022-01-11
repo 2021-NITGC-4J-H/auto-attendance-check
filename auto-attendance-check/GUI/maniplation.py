@@ -10,7 +10,7 @@ import tkinter as tk
 # ボタンクリック時の操作
 
 
-def RefAttendData():
+def reference_attend_data():
     """
     「出席状況」button was pushed
     Notes
@@ -20,7 +20,7 @@ def RefAttendData():
     pass
 
 
-def TakePhotoCom():
+def take_photo_command():
     """
     「教室撮影」button was pushed
 
@@ -50,7 +50,7 @@ def TakePhotoCom():
     )
 
 
-def SetTimetable():
+def set_timetable():
     """
     「時間割」button was pushed
 
@@ -60,37 +60,37 @@ def SetTimetable():
         指定したフォーマットでテキストファイルに出力する。
     """
 
-    newWindow = tk.Toplevel()
-    newWindow.geometry("750x600")
+    new_window = tk.Toplevel()
+    new_window.geometry("750x600")
 
-    timetable_frame.timetableFrame(newWindow)
+    timetable_frame.TimetableFrame(new_window)
 
 
-def SetCalender():
+def set_calender():
     """
     「カレンダー」button was pushed
     """
     pass
 
 
-def LookTimetable():
+def looktimetable():
     """
     設定した「時間割」を見る
     """
-    newWindow = tk.Toplevel()
-    newWindow.geometry("750x680")
+    new_window = tk.Toplevel()
+    new_window.geometry("750x680")
 
-    look_timetable.look_timetable(newWindow)
+    look_timetable.LookTimetable(new_window)
 
 
-def Configuration(mysettings: owner.owner):
+def configuration(mysettings: owner.owner):
     """
     「設定」button was pushed
     Notes
     """
-    newWindow = tk.Toplevel()
-    newWindow.geometry("500x550")
+    new_window = tk.Toplevel()
+    new_window.geometry("500x550")
 
-    configuration_frame.configurationFrame(newWindow, mysettings)
+    configuration_frame.ConfigurationFrame(new_window, mysettings)
 
     pass

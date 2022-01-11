@@ -4,16 +4,16 @@ import tkinter as tk
 from tkinter import ttk
 
 
-class timetableFrame(tk.Frame):
+class TimetableFrame(tk.Frame):
     """
     mainframeの「時間割」 -> subframeの「時間割の新規登録」
     ボタンが押された時に作成するフレーム
     """
 
-    def __init__(self, newWindow: tk.Toplevel):
-        super().__init__(newWindow, width=754, height=680)
+    def __init__(self, new_window: tk.Toplevel):
+        super().__init__(new_window, width=754, height=680)
 
-        self.toplevel = newWindow
+        self.toplevel = new_window
         self.timed = 0
 
         self.complete_button = tk.Button(
@@ -26,7 +26,7 @@ class timetableFrame(tk.Frame):
             height=2,
             relief=tk.RAISED,
             cursor="hand2",
-            command=self.Completed,
+            command=self.completed,
         )
         self.complete_button.place(x=600, y=500)
 
@@ -40,15 +40,15 @@ class timetableFrame(tk.Frame):
             height=2,
             relief=tk.RAISED,
             cursor="hand2",
-            command=newWindow.destroy,
+            command=new_window.destroy,
         )
         self.cancel_button.place(x=460, y=500)
 
-        self.errortext = tk.StringVar(self)
-        self.errorlabel = tk.Label(
-            self, textvariable=self.errortext, font=("Times", 14)
+        self.error_text = tk.StringVar(self)
+        self.error_label = tk.Label(
+            self, textvariable=self.error_text, font=("Times", 14)
         )
-        self.errorlabel.place(x=200, y=30)
+        self.error_label.place(x=200, y=30)
 
         self.name_label = tk.Label(self, text="時間割名", font=("Times", 14))
         self.name_label.place(x=30, y=70)
@@ -116,16 +116,16 @@ class timetableFrame(tk.Frame):
 
         self.grid(row=0, column=0, sticky="nsew")
 
-    def Completed(self):
+    def completed(self):
         if self.name_text.get() != "":
-            self.timed = self.CheckLogic()
+            self.timed = self.check_logic()
             if self.timed != -1:
-                self.errortext.set("")
-                self.Confirm(self.toplevel)
+                self.error_text.set("")
+                self.confirm(self.toplevel)
         else:
-            self.errortext.set("時間割名を入力してください")
+            self.error_text.set("時間割名を入力してください")
 
-    def CheckLogic(self):
+    def check_logic(self):
         """
         入力された授業時間割が論理的に正しいか否か判定する関数
 
@@ -142,7 +142,7 @@ class timetableFrame(tk.Frame):
 
             if s1 != "" or s2 != "" or e1 != "" or e2 != "":
                 if s1 == "" or s2 == "" or e1 == "" or e2 == "":
-                    self.errortext.set("同一授業欄の中に値が指定されていない箇所があります")
+                    self.error_text.set("同一授業欄の中に値が指定されていない箇所があります")
                     return -1
                 else:
                     s1 = int(s1)
@@ -150,24 +150,24 @@ class timetableFrame(tk.Frame):
                     e1 = int(e1)
                     e2 = int(e2)
                     if (s1 > e1) or ((s1 == e1) and (s2 > e2)):
-                        self.errortext.set("終了時刻が開始時刻よりも早い箇所があります")
+                        self.error_text.set("終了時刻が開始時刻よりも早い箇所があります")
                         return -1
                     elif i != 0:
                         pe1 = int(self.end_hour[i - 1].get())
                         pe2 = int(self.end_min[i - 1].get())
                         if (s1 < pe1) or ((s1 == pe1) and (s2 < pe2)):
-                            self.errortext.set("開始時刻が前の授業終了時刻より早い箇所があります")
+                            self.error_text.set("開始時刻が前の授業終了時刻より早い箇所があります")
                             return -1
             else:
                 return i
 
             i = i + 1
 
-    def Confirm(self, toplevel: tk.Toplevel):
-        confirmFrame = tk.Frame(toplevel, width=754, height=1080)
+    def confirm(self, toplevel: tk.Toplevel):
+        confirm_frame = tk.Frame(toplevel, width=754, height=1080)
 
         confirmed_button = tk.Button(
-            confirmFrame,
+            confirm_frame,
             text="確認",
             borderwidth=10,
             padx=15,
@@ -176,12 +176,12 @@ class timetableFrame(tk.Frame):
             height=2,
             relief=tk.RAISED,
             cursor="hand2",
-            command=lambda: self.MakeFile(toplevel),
+            command=lambda: self.make_file(toplevel),
         )
         confirmed_button.place(x=600, y=500)
 
         modify_button = tk.Button(
-            confirmFrame,
+            confirm_frame,
             text="修正",
             borderwidth=10,
             padx=15,
@@ -190,12 +190,12 @@ class timetableFrame(tk.Frame):
             height=2,
             relief=tk.RAISED,
             cursor="hand2",
-            command=confirmFrame.destroy,
+            command=confirm_frame.destroy,
         )
         modify_button.place(x=460, y=500)
 
         cancel_button = tk.Button(
-            confirmFrame,
+            confirm_frame,
             text="キャンセル",
             borderwidth=10,
             padx=15,
@@ -208,10 +208,10 @@ class timetableFrame(tk.Frame):
         )
         cancel_button.place(x=320, y=500)
 
-        name_label = tk.Label(confirmFrame, text="時間割名", font=("Times", 14))
+        name_label = tk.Label(confirm_frame, text="時間割名", font=("Times", 14))
         name_label.place(x=30, y=70)
         name_text_label = tk.Label(
-            confirmFrame, width=20, text=self.name_text.get(), font=("Times", 14)
+            confirm_frame, width=20, text=self.name_text.get(), font=("Times", 14)
         )
         name_text_label.place(x=90, y=70)
 
@@ -228,29 +228,29 @@ class timetableFrame(tk.Frame):
         for i in range(0, 7):
             start_hour.append(
                 tk.Label(
-                    confirmFrame, text=self.start_hour[i].get(), font=("Times", 14)
+                    confirm_frame, text=self.start_hour[i].get(), font=("Times", 14)
                 )
             )
             start_min.append(
-                tk.Label(confirmFrame, text=self.start_min[i].get(), font=("Times", 14))
+                tk.Label(confirm_frame, text=self.start_min[i].get(), font=("Times", 14))
             )
             end_hour.append(
-                tk.Label(confirmFrame, text=self.end_hour[i].get(), font=("Times", 14))
+                tk.Label(confirm_frame, text=self.end_hour[i].get(), font=("Times", 14))
             )
             end_min.append(
-                tk.Label(confirmFrame, text=self.end_min[i].get(), font=("Times", 14))
+                tk.Label(confirm_frame, text=self.end_min[i].get(), font=("Times", 14))
             )
 
             label_start.append(
-                tk.Label(confirmFrame, text=(str)(i + 1) + "時間目開始", font=("Times", 14))
+                tk.Label(confirm_frame, text=(str)(i + 1) + "時間目開始", font=("Times", 14))
             )
             label_end.append(
-                tk.Label(confirmFrame, text=(str)(i + 1) + "時間目終了", font=("Times", 14))
+                tk.Label(confirm_frame, text=(str)(i + 1) + "時間目終了", font=("Times", 14))
             )
-            label_hour.append(tk.Label(confirmFrame, text="時", font=("Times", 14)))
-            label_hour.append(tk.Label(confirmFrame, text="時", font=("Times", 14)))
-            label_minutes.append(tk.Label(confirmFrame, text="分", font=("Times", 14)))
-            label_minutes.append(tk.Label(confirmFrame, text="分", font=("Times", 14)))
+            label_hour.append(tk.Label(confirm_frame, text="時", font=("Times", 14)))
+            label_hour.append(tk.Label(confirm_frame, text="時", font=("Times", 14)))
+            label_minutes.append(tk.Label(confirm_frame, text="分", font=("Times", 14)))
+            label_minutes.append(tk.Label(confirm_frame, text="分", font=("Times", 14)))
 
             start_hour[i].place(x=150, y=(120 + (50 * i)))
             start_min[i].place(x=250, y=(120 + (50 * i)))
@@ -264,9 +264,9 @@ class timetableFrame(tk.Frame):
             label_hour[i * 2 + 1].place(x=560, y=(120 + (50 * i)))
             label_minutes[i * 2 + 1].place(x=660, y=(120 + (50 * i)))
 
-        confirmFrame.grid(row=0, column=0, sticky="nsew")
+        confirm_frame.grid(row=0, column=0, sticky="nsew")
 
-    def MakeFile(self, toplevel: tk.Toplevel):
+    def make_file(self, toplevel: tk.Toplevel):
         """
         入力された時間割をフォーマットに従ったテキストファイルとして出力
 
