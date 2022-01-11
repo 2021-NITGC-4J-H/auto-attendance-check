@@ -1,5 +1,5 @@
 import tkinter as tk
-import maniplation as man
+import maniplation as maniplation
 
 """ frame_timetable 作成部 """
 
@@ -32,7 +32,7 @@ class SubFrame(tk.Frame):
             height=2,
             relief=tk.RAISED,
             cursor="hand2",
-            command=man.set_timetable,
+            command=maniplation.set_timetable,
         )
 
         set_timetable_button.pack(padx=5, pady=10, side=tk.TOP)
@@ -47,7 +47,7 @@ class SubFrame(tk.Frame):
             height=2,
             relief=tk.RAISED,
             cursor="hand2",
-            command=man.set_calender,
+            command=maniplation.set_calender,
         )
         set_calender_button.pack(padx=5, pady=10, side=tk.TOP)
 
@@ -61,7 +61,7 @@ class SubFrame(tk.Frame):
             height=2,
             relief=tk.RAISED,
             cursor="hand2",
-            command=man.look_timetable,
+            command=maniplation.looktimetable,
         )
         look_timetable_button.pack(padx=5, pady=10, side=tk.TOP)
 

@@ -3,6 +3,7 @@
 import tkinter as tk
 import glob
 import os
+import toml
 import timetable_frame
 
 
@@ -27,7 +28,9 @@ class LookTimetable(tk.Frame):
         self.name_label = []
         self.selectbox = []
 
+        print(num)
         for i in range(0, num):
+            print(i)
             self.name_text.append(tk.StringVar(self))
             self.name_text[i].set(name_list[i])
             self.name_label.append(
@@ -70,7 +73,6 @@ class LookTimetable(tk.Frame):
             self.name_label[i].place(x=150, y=(120 + (100 * i)))
             self.selectbox[i].place(x=300, y=(120 + (100 * i)))
 
-            i = i + 1
 
         self.finish_button = tk.Button(
             self,
@@ -99,18 +101,16 @@ class LookTimetable(tk.Frame):
         """
         # 指定dir内のすべてのファイルを取得
         path_list = glob.glob(dir + "/*")
-
+        
         # パスリストからファイル名を抽出
-        num = 0
+        num = len(path_list)
         name_list = []
         for i in path_list:
             file = os.path.basename(i)
             name, ext = os.path.splitext(file)
             name_list.append(name)
             print(str(i) + i)
-            num += num + 1
 
-        num = num - 1
         return path_list, name_list, num
 
     def look_table(self, tablename: str):
@@ -127,24 +127,26 @@ class LookTimetable(tk.Frame):
         # 指定された時間割の内容を取得
         try:
             with open(
-                "./class_table/" + tablename + ".txt", "rt", encoding="UTF-8"
+                "./class_table/" + tablename + ".toml", "rt", encoding="UTF-8"
             ) as fp:
-                data = fp.readlines()
+                data = toml.load(fp)
         except FileNotFoundError as e:
             print(e)
             return -1
 
-        text_name = data[0].split("\n")
+        text_name = data["table_name"]
 
-        edit_frame.name_text.insert(0, text_name[0])
+        edit_frame.name_text.insert(0, text_name)
 
-        for i in range(0, int(data[1])):
-            time = data[2 + (i * 2)].split()
-            edit_frame.start_hour[i].set(time[0])
-            edit_frame.start_min[i].set(time[1])
+        for i in range(0, int(data["class_num"])):
+            time = data[str(i+1) + "限目開始"]
+            start_time = time.split()
+            edit_frame.start_hour[i].set(start_time[0])
+            edit_frame.start_min[i].set(start_time[1])
 
-            time = data[2 + (i * 2 + 1)].split()
-            edit_frame.end_hour[i].set(time[0])
-            edit_frame.end_min[i].set(time[1])
+            time = data[str(i+1) + "限目終了"]
+            end_time = time.split()
+            edit_frame.end_hour[i].set(end_time[0])
+            edit_frame.end_min[i].set(end_time[1])
 
-        pass
+        return 0

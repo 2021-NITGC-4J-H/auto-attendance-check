@@ -45,7 +45,7 @@ def take_photo_command():
     # 呼び出すコマンド
     cmd = 'python core/main.py "TakePhoto"'
 
-    ssh.ConnectSSH(
+    ssh.connect_SSH(
         IP_ADDRESS=l_strip[0], USER_NAME=l_strip[1], PASSWORD=l_strip[2], CMD=cmd
     )
 
@@ -83,7 +83,7 @@ def looktimetable():
     look_timetable.LookTimetable(new_window)
 
 
-def configuration(mysettings: owner.owner):
+def configuration(mysettings: owner.Owner):
     """
     「設定」button was pushed
     Notes

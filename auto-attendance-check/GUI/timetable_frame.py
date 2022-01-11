@@ -2,6 +2,7 @@
 
 import tkinter as tk
 from tkinter import ttk
+import toml
 
 
 class TimetableFrame(tk.Frame):
@@ -50,10 +51,10 @@ class TimetableFrame(tk.Frame):
         )
         self.error_label.place(x=200, y=30)
 
-        self.name_label = tk.Label(self, text="時間割名", font=("Times", 14))
+        self.name_label = tk.Label(self, text="時間割名(ローマ字)", font=("Times", 14))
         self.name_label.place(x=30, y=70)
         self.name_text = tk.Entry(self, width=20, font=("Timer", 18))
-        self.name_text.place(x=150, y=70, height=30)
+        self.name_text.place(x=240, y=70, height=30)
 
         self.label_start = []
         self.label_end = []
@@ -280,26 +281,20 @@ class TimetableFrame(tk.Frame):
         ......(時間数分記述)
         """
 
-        with open(
-            "./class_table/" + self.name_text.get() + ".txt", mode="w", encoding="utf-8"
-        ) as fp:
-            write_text = []
-            write_text.append(self.name_text.get())
-            write_text.append(str(self.timed))
+        write_toml = {}
+        write_toml["table_name"] = self.name_text.get()
+        write_toml["class_num"] = str(self.timed)
 
-            fp.write(write_text[0] + "\n")
-            fp.write(write_text[1] + "\n")
+        for i in range(0, self.timed):
+            s1 = self.start_hour[i].get()
+            s2 = self.start_min[i].get()
+            e1 = self.end_hour[i].get()
+            e2 = self.end_min[i].get()
 
-            for i in range(0, self.timed):
-                s1 = self.start_hour[i].get()
-                s2 = self.start_min[i].get()
-                e1 = self.end_hour[i].get()
-                e2 = self.end_min[i].get()
+            write_toml[str(i+1) + "限目開始"] = s1 + " " + s2
+            write_toml[str(i+1) + "限目終了"] = e1 + " " + e2
 
-                write_text.append(s1 + " " + s2)
-                write_text.append(e1 + " " + e2)
+        toml.dump(write_toml, open("./class_table/" + self.name_text.get() + ".toml", mode="w", encoding="UTF-8"))
 
-                fp.write(write_text[(2 * i + 0) + 2] + "\n")
-                fp.write(write_text[(2 * i + 1) + 2] + "\n")
 
         toplevel.destroy()
