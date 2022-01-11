@@ -141,9 +141,6 @@ cython_debug/
 .vscode/
 .idea/
 
-# images
-*.jpg
-
 # 環境
 aac_env/
 
@@ -152,3 +149,5 @@ auto-attendance-check/core/mail_secret.toml
 auto-attendance-check/GUI/normal.txt
 auto-attendance-check/GUI/raspberrypi_key.txt
 auto-attendance-check/GUI/confirmation.toml
+auto-attendance-check/core/images/
+auto-attendance-check/core/backups/
