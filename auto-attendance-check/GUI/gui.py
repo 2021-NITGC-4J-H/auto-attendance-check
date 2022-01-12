@@ -22,7 +22,6 @@ window.geometry("815x680")
 window.grid_rowconfigure(0, weight=1)
 window.grid_columnconfigure(0, weight=1)
 
-"""----------------------------------------------------"""
 """ main frame 作成部 """
 
 # main frame の作成

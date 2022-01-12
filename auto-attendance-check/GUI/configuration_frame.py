@@ -121,13 +121,13 @@ class ConfigurationFrame(tk.Frame):
 
         edit_frame.grid(row=0, column=0, sticky="nsew")
 
-    def update(self, edit_frame: tk.Frame, mysettings: owner.Owner, change: tk.Entry):
+    def update(self, edit_frame: tk.Frame, mysettings: owner.Owner, change: tk.Entry) -> bool:
         """
         ラベルに入力された値から設定情報を更新する
 
         return:
-            Success -> 0
-            Failure -> -1
+            True : 問題なく設定情報を更新できた場合
+            False : 撮影間隔に数字以外が指定された場合
         """
         new_interval = change[3].get()
         if new_interval == "":
@@ -139,7 +139,7 @@ class ConfigurationFrame(tk.Frame):
                 print(e)
                 self.error_label.config(bg="lightslategray")
                 self.error_text.set("撮影間隔には数字を入力してください")
-                return -1
+                return False
 
         mysettings.update(
             username=change[0].get(),
@@ -155,4 +155,4 @@ class ConfigurationFrame(tk.Frame):
 
         edit_frame.destroy()
 
-        return 0
+        return True

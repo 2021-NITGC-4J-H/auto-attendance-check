@@ -113,13 +113,9 @@ class LookTimetable(tk.Frame):
 
         return path_list, name_list, num
 
-    def look_table(self, tablename: str):
+    def look_table(self, tablename: str) -> bool:
         """
         時間割を表示(編集)する
-
-        return :
-            Success -> 0
-            Failure -> -1
         """
 
         edit_frame = timetable_frame.TimetableFrame(self.toplevel)
@@ -132,7 +128,7 @@ class LookTimetable(tk.Frame):
                 data = toml.load(fp)
         except FileNotFoundError as e:
             print(e)
-            return -1
+            return False
 
         text_name = data["table_name"]
 
@@ -149,4 +145,4 @@ class LookTimetable(tk.Frame):
             edit_frame.end_hour[i].set(end_time[0])
             edit_frame.end_min[i].set(end_time[1])
 
-        return 0
+        return True
