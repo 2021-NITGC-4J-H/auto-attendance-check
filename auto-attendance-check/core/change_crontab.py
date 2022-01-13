@@ -4,13 +4,14 @@
 毎日午前0時になったらこのファイルを実行する
 """
 
-import use_google_calendar
+import google_calendar
 import datetime
 import glob
 import os
+from typing import Tuple
 
 
-def file_search(dir: str):
+def file_search(dir: str) -> Tuple[list, list, int]:
     """
     引数に指定したディレクトリ配下のファイルを探す関数
 
@@ -38,7 +39,7 @@ def main() -> bool:
     """
     google calendar から今日の時間割を取得し、crontabを変更する
     """
-    events = use_google_calendar.read()
+    events = google_calendar.read()
 
     if not events:
         print("No upcoming events fountd.")
@@ -46,8 +47,7 @@ def main() -> bool:
 
     now = datetime.datetime.utcnow().isoformat() + "Z"
     time = now.split("T")
-    path_list, name_list, num = file_search("./class_table")
-    # path_list, name_list, num = file_search("./photo_table")
+    path_list, name_list, num = file_search("./photo_table")
 
     i = 0
     for event in events:
@@ -65,8 +65,7 @@ def main() -> bool:
         print("Couldn't find match event")
         return False
 
-    # os.system('crontab /home/pi/core/photo_table/' + event['summary'] + '.txt')
-    os.system("dir")
+    os.system('crontab /home/pi/core/photo_table/' + event['summary'] + '.txt')
 
     return True
 
