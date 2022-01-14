@@ -45,26 +45,29 @@ def main() -> bool:
         print("No upcoming events fountd.")
         return False
 
-    now = datetime.datetime.utcnow().isoformat() + "Z"
-    time = now.split("T")
+    today = datetime.datetime.utcnow().strftime("%F")
     path_list, name_list, num = file_search("./photo_table")
 
     i = 0
+    # 直近10件のイベントについて
     for event in events:
         i = 0
+        # イベントの開始時刻をstartに格納
         start = event["start"].get("dateTime", event["start"].get("date"))
-        if start in time[0]:
+        # イベントが今日の場合
+        if start in today:
+            # イベント名を持つタイムテーブルが存在するか判定
             while (i < num) and (event["summary"] != name_list[i]):
                 i += 1
+            # イベント名とタイムテーブル名が一致しなかった場合
             if i < num:
                 break
 
-    print("num==", num)
-    print("i==", i)
+    # タイムテーブル名と一致する今日のイベントが見つからなかった場合
     if event["summary"] != name_list[i]:
-        print("Couldn't find match event")
         return False
 
+    # 見つかった場合はcrontabを書き換える
     os.system('crontab /home/pi/core/photo_table/' + event['summary'] + '.txt')
 
     return True
