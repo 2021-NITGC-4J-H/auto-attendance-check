@@ -35,7 +35,7 @@ def file_search(dir: str) -> Tuple[list, list, int]:
     return path_list, name_list, num
 
 
-def main() -> bool:
+def update_schedule() -> bool:
     """
     google calendar から今日の時間割を取得し、crontabを変更する
     """
@@ -71,7 +71,3 @@ def main() -> bool:
     os.system('crontab /home/pi/core/photo_table/' + event['summary'] + '.txt')
 
     return True
-
-
-if __name__ == "__main__":
-    main()
