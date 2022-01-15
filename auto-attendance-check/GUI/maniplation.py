@@ -1,17 +1,15 @@
-# GUI sub file
+# GUI sub file ボタンクリック時の操作
 
+import tkinter as tk
 import ssh
+import toml
 import timetable_frame
 import look_timetable
 import owner
 import configuration_frame
 import subjects_frame
 import send_tables_frame
-import toml
-import tkinter as tk
-
-# ボタンクリック時の操作
-
+import set_calendar_frame
 
 def reference_attend_data():
     """
@@ -33,8 +31,7 @@ def take_photo_command():
         data = toml.load(fp)
 
     # 呼び出すコマンド
-    #cmd = 'aac take_photo gui'
-    cmd = 'hostname -I'
+    cmd = 'aac take_photo gui'
 
     ssh.connect_SSH(
         IP_ADDRESS=data["IP_ADDRESS"], USER_NAME=data["USER_NAME"], PASSWORD=data["PASS_WORD"], CMD=cmd
@@ -61,7 +58,10 @@ def set_calender():
     """
     「タイムテーブルの指定」button was pushed
     """
-    pass
+    new_window = tk.Toplevel()
+    new_window.geometry("750x680")
+
+    set_calendar_frame.SetCalendarFrame(new_window)
 
 
 def looktimetable():

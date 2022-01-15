@@ -7,7 +7,7 @@ import toml
 from typing import Union, Tuple, Optional
 
 
-def entry(date: int, table_name: str):
+def entry(date: list[int], table_name: str):
     """
     google calenderに時間割を登録する
 
@@ -33,10 +33,12 @@ def entry(date: int, table_name: str):
     service.events().insert(calendarId=calendar_id, body=event).execute()
 
 
-def read() -> Union[list, None]:
+def read(num: int) -> Union[list, None]:
     """
     カレンダーの現在からの10件の予定を取得する
 
+    parameter:
+    num: 取得するイベントの最大数
     return: events (イベント情報のリスト)
     """
     calendar_id, gapi_creds = auth()
@@ -48,7 +50,7 @@ def read() -> Union[list, None]:
         .list(
             calendarId=calendar_id,
             timeMin=now,
-            maxResults=10,
+            maxResults=num,
             singleEvents=True,
             orderBy="startTime",
         )
