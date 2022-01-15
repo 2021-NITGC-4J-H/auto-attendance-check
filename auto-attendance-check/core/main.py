@@ -42,7 +42,6 @@ class Commands(object):
     ----
     GUIの操作に対応させて必要なコマンドを作っていく
     """
-
     def take_photo(save_image: SaveImage = SaveImage.LOCAL):
         """
         写真を撮影
@@ -76,5 +75,6 @@ class Commands(object):
         """
         pass
 
-if __name__ == "__main__":
+
+def main():
     fire.Fire(Commands)
