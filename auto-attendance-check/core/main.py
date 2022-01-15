@@ -1,4 +1,10 @@
+from enum import Enum, auto
 import fire
+
+
+class SaveImage(Enum):
+    GUI = auto()
+    LOCAL = auto()
 
 
 class Commands(object):
@@ -17,11 +23,14 @@ class Commands(object):
         """
         pass
 
-    def take_photo():
+    def take_photo(save_image: SaveImage = SaveImage.LOCAL):
         """
         写真を撮影
         """
-        pass
+        if save_image == SaveImage.LOCAL:
+            pass
+        elif save_image == SaveImage.GUI:
+            pass
 
     def set_time_table():
         """
