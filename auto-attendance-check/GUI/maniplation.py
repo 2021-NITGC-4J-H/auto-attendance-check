@@ -7,6 +7,7 @@ import owner
 import configuration_frame
 import subjects_frame
 import send_tables_frame
+import toml
 import tkinter as tk
 
 # ボタンクリック時の操作
@@ -28,14 +29,15 @@ def take_photo_command():
     """
 
     # raspberrypiのファイルのパスワードファイルの読み込み
-    with open("raspberrypi_key.txt", mode="r") as fp:
-        l_strip = [s.strip() for s in fp.readlines()]
+    with open("raspberrypi_key.toml", mode="rt", encoding="UTF-8") as fp:
+        data = toml.load(fp)
 
     # 呼び出すコマンド
-    cmd = 'aac take_photo gui'
+    #cmd = 'aac take_photo gui'
+    cmd = 'hostname -I'
 
     ssh.connect_SSH(
-        IP_ADDRESS=l_strip[0], USER_NAME=l_strip[1], PASSWORD=l_strip[2], CMD=cmd
+        IP_ADDRESS=data["IP_ADDRESS"], USER_NAME=data["USER_NAME"], PASSWORD=data["PASS_WORD"], CMD=cmd
     )
 
 

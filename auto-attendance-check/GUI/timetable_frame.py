@@ -1,10 +1,10 @@
-# maniplation.py > SetTimetable() により呼び出されるフレーム
+# maniplation.py > set_timetable() により呼び出されるフレーム
 
 import tkinter as tk
 from tkinter import ttk
+from tkinter import messagebox
 import toml
 import owner
-import ssh
 
 
 class TimetableFrame(tk.Frame):
@@ -323,7 +323,7 @@ class TimetableFrame(tk.Frame):
 
             while True:
                 enter.append(
-                    str(t2) + " " + str(t1) + " * * * /home/pi/core/rpicamera.sh\n"
+                    str(t2) + " " + str(t1) + " * * * aac take_photo; aac analysis\n"
                 )
 
                 t2 += interval
@@ -335,23 +335,13 @@ class TimetableFrame(tk.Frame):
                     break
 
             enter.append(
-                str(e2) + " " + str(e1) + " * * * /home/pi/core/rpicamera.sh\n"
+                str(e2) + " " + str(e1) + " * * * aac take_photo; aac analysis\n"
             )
-            enter.append("0 0 * * * python /home/pi/core/change_crontab.py\n")
+            enter.append("0 0 * * * aac update_crontab\n")
 
         with open("./photo_table/" + self.name_text.get() + ".txt", mode="w") as f:
             f.writelines(enter)
 
-        # 作成したファイルをSSHでラズパイに送信
-        # raspberrypiのファイルのパスワードファイルの読み込み
-        with open("raspberrypi_key.txt", mode="r") as fp:
-            l_strip = [s.strip() for s in fp.readlines()]
-
-        # 呼び出すコマンド
-        cmd = 'python core/main.py "add_phototable"'
-
-        ssh.connect_SSH(
-            IP_ADDRESS=l_strip[0], USER_NAME=l_strip[1], PASSWORD=l_strip[2], CMD=cmd
-        )
+        messagebox.showinfo("成功", "タイムテーブルの作成に成功しました")
 
         toplevel.destroy()

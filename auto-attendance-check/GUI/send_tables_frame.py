@@ -4,7 +4,8 @@ import tkinter as tk
 from tkinter import messagebox
 import paramiko
 import glob
-
+import toml
+import os
 
 class SendTablesFrame(tk.Frame):
     """
@@ -90,48 +91,50 @@ class SendTablesFrame(tk.Frame):
         check3 = self.check_value_subjects.get()
 
         if check1 or check2 or check3:
+            
             # raspberrypiのファイルのパスワードファイルの読み込み
-            with open("raspberrypi_key.txt", mode="r") as fp:
-                l_strip = [s.strip() for s in fp.readlines()]
+            with open("raspberrypi_key.toml", mode="rt", encoding="UTF-8") as fp:
+                data = toml.load(fp)
 
             # SSHでラズパイに接続
             client = paramiko.SSHClient()
-            client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+            client.set_missing_host_key_policy(paramiko.WarningPolicy)
             
             try:
-                client.connect(l_strip[0], username=l_strip[1], password=l_strip[2])
+                client.connect(data["IP_ADDRESS"], username=data["USER_NAME"], password=data["PASS_WORD"], timeout=5.0)
             except:
                 messagebox.showerror("エラー", "ラズパイに接続できませんでした")
                 self.toplevel.destroy()
                 return
+            
 
             # フォルダ内のファイルを転送
             if self.check_value_class.get():
-                path_list = self.file_search("./" + self.folder1)
+                name_list = self.file_search("./" + self.folder1)
                 try:
                     sftp_connection = client.open_sftp()
-                    for filename in path_list:
-                        sftp_connection.put(filename, "~/.config/aac/" + self.folder1 + filename)
+                    for filename in name_list:
+                        sftp_connection.put("./"+self.folder1+"/"+filename+".toml", "/home/pi/.config/aac/"+self.folder1+"/"+ filename+".toml")
                 except:
                     messagebox.showerror("エラー", self.folder1 + "の送信に失敗しました")
                     self.toplevel.destroy()
                     return
             if self.check_value_photo.get():
-                path_list = self.file_search("./" + self.folder2)
+                name_list = self.file_search("./" + self.folder2)
                 try:
                     sftp_connection = client.open_sftp()
-                    for filename in path_list:
-                        sftp_connection.put(filename, "~/.config/aac/" + self.folder2 + filename)
+                    for filename in name_list:
+                        sftp_connection.put("./"+self.folder2+"/"+filename+".txt", "/home/pi/.config/aac/"+self.folder2+"/"+ filename+".txt")
                 except:
                     messagebox.showerror("エラー", self.folder2 + "の送信に失敗しました")
                     self.toplevel.destroy()
                     return
             if self.check_value_subjects.get():
-                path_list = self.file_search("./" + self.folder3)
+                name_list = self.file_search("./" + self.folder3)
                 try:
                     sftp_connection = client.open_sftp()
-                    for filename in path_list:
-                        sftp_connection.put(filename, "~/.config/aac/" + self.folder3 + filename)
+                    for filename in name_list:
+                        sftp_connection.put("./"+self.folder3+"/"+filename+".toml", "/home/pi/.config/aac/"+self.folder3+"/"+ filename+".toml")
                 except:
                     messagebox.showerror("エラー", self.folder3 + "の送信に失敗しました")
                     self.toplevel.destroy()
@@ -143,14 +146,21 @@ class SendTablesFrame(tk.Frame):
         self.toplevel.destroy()
         return
     
-    def file_search(self, dir: str):
+    def file_search(self, dir: str) -> list:
         """
         引数に指定したディレクトリ配下のファイルを探す関数
 
         return:
-            path_list: パス名のリスト
+            name_list: (拡張子なしの)ファイル名のリスト
         """
         # 指定dir内のすべてのファイルを取得
         path_list = glob.glob(dir + "/*")
 
-        return path_list
+        # パスリストからファイル名を抽出
+        name_list = []
+        for i in path_list:
+            file = os.path.basename(i)
+            name, ext = os.path.splitext(file)
+            name_list.append(name)
+
+        return name_list
