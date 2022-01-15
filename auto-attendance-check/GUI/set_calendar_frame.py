@@ -6,11 +6,10 @@ from tkinter import ttk
 from tkinter import messagebox
 import glob
 import os
-import toml
 import google_calendar
 
 
-class SetCalendarFrame(tk.Frame):
+class DateFrame(tk.Frame):
     """
     mainframeの「時間割」 -> subframeの「時間割の新規登録」
     ボタンが押された時に作成するフレーム
@@ -20,7 +19,7 @@ class SetCalendarFrame(tk.Frame):
         super().__init__(new_window, width=754, height=680)
 
         self.toplevel = new_window
-        
+
         self.name_list, self.num = self.file_search("./class_table")
         if self.num == 0:
             messagebox.ERROR("エラー", "タイムテーブルが設定されていません\n「時間割」>「時間割の新規登録」にて作成してください")
@@ -37,7 +36,7 @@ class SetCalendarFrame(tk.Frame):
             height=2,
             relief=tk.RAISED,
             cursor="hand2",
-            command=self.register,
+            command=self.entry,
         )
         self.complete_button.place(x=600, y=500)
 
@@ -57,13 +56,15 @@ class SetCalendarFrame(tk.Frame):
 
         # このフレームの説明
         self.title_label = tk.Label(
-            self, text="選択した日付に選択したタイムテーブルを設定します", font=("bold", 14),
+            self,
+            text="選択した日付に選択したタイムテーブルを設定します",
+            font=("bold", 14),
         )
         self.title_label.place(x=170, y=30)
 
         self.explanation_label = tk.Label(
             self,
-            text =  "※選択できるタイムテーブルは1つです\n",
+            text="※選択できるタイムテーブルは1つです\n",
             font=("Arial", 10),
             anchor=tk.W,
         )
@@ -101,12 +102,12 @@ class SetCalendarFrame(tk.Frame):
             name_list.append(name)
 
         return name_list, num
-    
-    def register(self):
+
+    def entry(self):
         # date = 'mm-dd-yy'
         date = self.calendar_date.get_date()
-        date_list = date.split('/')
-        
+        date_list = date.split("/")
+
         # dateをint型のリスト[yyyy, mm, dd]に変換
         register_date = []
         register_date.append(2000 + int(date_list[2]))
@@ -121,11 +122,11 @@ class SetCalendarFrame(tk.Frame):
         # 指定した日に既にタイムテーブルが登録されているかチェック
         events = google_calendar.read(1000)
         if events:
-            for i in range(0,3):
+            for i in range(0, 3):
                 if int(date_list[i]) < 10:
-                    date_list[i] = "0"+date_list[i]
-            
-            check_date = "20"+date_list[2]+"-"+date_list[0]+"-"+date_list[1]
+                    date_list[i] = "0" + date_list[i]
+
+            check_date = "20" + date_list[2] + "-" + date_list[0] + "-" + date_list[1]
             i = 0
             # 取得したイベントについて
             for event in events:
@@ -140,7 +141,7 @@ class SetCalendarFrame(tk.Frame):
                     # イベント名とタイムテーブル名が一致しなかった場合
                     if i < self.num:
                         break
-            
+
             # タイムテーブル名と一致するその日のイベントが見つからなかった場合
             try:
                 if (start == check_date) and (event["summary"] == self.name_list[i]):
@@ -152,11 +153,9 @@ class SetCalendarFrame(tk.Frame):
 
         try:
             google_calendar.entry(register_date, table_name)
-        except:
+        except Exception:
             messagebox.showerror("エラー", "カレンダーに登録できませんでした")
             return
-        
+
         messagebox.showinfo("成功", "登録に成功しました")
         return
-
-

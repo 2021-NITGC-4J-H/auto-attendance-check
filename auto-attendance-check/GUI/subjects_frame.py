@@ -3,11 +3,9 @@
 import tkinter as tk
 from tkinter import messagebox
 import toml
-import owner
-import ssh
 
 
-class SubjectsFrame(tk.Frame):
+class SubjectFrame(tk.Frame):
     """
     mainframeの「時間割」 -> subframeの「時間割の新規登録」
     ボタンが押された時に作成するフレーム
@@ -57,49 +55,55 @@ class SubjectsFrame(tk.Frame):
         self.class_label = []
         self.class_number = ["1限目", "2限目", "3限目", "4限目", "5限目", "6限目", "7限目", "8限目"]
 
-        self.day_name = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
-    
-        for i in range(0,7):
-            self.day_label.append(tk.Label(
-                self, text=self.day_list[i], font=("Times", 14)
-            ))
-            self.day_label[i].place(x=(100 + (i*90)), y=70)
+        self.day_name = [
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday",
+            "Saturday",
+            "Sunday",
+        ]
 
-        for i in range(0,8):
-            self.class_label.append(tk.Label(
-                self, text=self.class_number[i], font=("Times",14)
-            ))
-            self.class_label[i].place(x=30, y=(120 + (50*i)))
+        for i in range(0, 7):
+            self.day_label.append(
+                tk.Label(self, text=self.day_list[i], font=("Times", 14))
+            )
+            self.day_label[i].place(x=(100 + (i * 90)), y=70)
+
+        for i in range(0, 8):
+            self.class_label.append(
+                tk.Label(self, text=self.class_number[i], font=("Times", 14))
+            )
+            self.class_label[i].place(x=30, y=(120 + (50 * i)))
 
         try:
-            with open(
-                "./subjects/subjects.toml", "rt", encoding="UTF-8"
-            ) as fp:
+            with open("./subjects/subjects.toml", "rt", encoding="UTF-8") as fp:
                 self.data = toml.load(fp)
         except FileNotFoundError:
             self.data = {}
-            
+
         # subjects.tomlファイルが存在しない場合
         if not self.data:
-            for i in range(0,7):
+            for i in range(0, 7):
                 dict_list = {}
-                for j in range(0,8):
-                    dict_list[f'class{(j+1)}'] = ""
+                for j in range(0, 8):
+                    dict_list[f"class{(j+1)}"] = ""
                 self.data[self.day_name[i]] = dict_list
 
         self.subject = []
 
-        for i in range(0,7):
+        for i in range(0, 7):
             self.subject.append([])
-            for j in range(0,8):
-                self.subject[i].append(tk.Entry(
-                    self, width=12, font=("Times", 10)
-                ))
+            for j in range(0, 8):
+                self.subject[i].append(tk.Entry(self, width=12, font=("Times", 10)))
                 try:
-                    self.subject[i][j].insert(0, self.data[self.day_name[i]][f'class{(j+1)}'])
+                    self.subject[i][j].insert(
+                        0, self.data[self.day_name[i]][f"class{(j+1)}"]
+                    )
                 except KeyError:
                     self.subject[i][j].insert(0, "")
-                self.subject[i][j].place(x=(100 + i*90), y=(124 + (50*j)))
+                self.subject[i][j].place(x=(100 + i * 90), y=(124 + (50 * j)))
 
         self.grid(row=0, column=0, sticky="nsew")
 
@@ -107,18 +111,18 @@ class SubjectsFrame(tk.Frame):
 
         # 時間割変更の確認
         ret = messagebox.askyesno("確認", "この内容で時間割を変更しますか？")
-        if ret == False:
+        if ret is False:
             return
 
         self.write_toml = {}
         self.toml_list = {}
-        for i in range(0,7):
+        for i in range(0, 7):
             self.toml_list = {}
-            for j in range(0,8):
+            for j in range(0, 8):
                 if self.subject[i][j].get() != "":
-                    self.toml_list[f'class{(j+1)}'] = str(self.subject[i][j].get())
+                    self.toml_list[f"class{(j+1)}"] = str(self.subject[i][j].get())
             self.write_toml[self.day_name[i]] = self.toml_list
-        
+
         toml.dump(
             self.write_toml,
             open(

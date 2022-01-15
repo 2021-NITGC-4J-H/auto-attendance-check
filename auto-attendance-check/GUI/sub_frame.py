@@ -13,11 +13,7 @@ class SubFrame(tk.Frame):
         super().__init__(window, width=754, height=680)
 
         # サブウィンドウのbuttonの作成
-        button_change = tk.Button(
-            self,
-            text="メインウィンドウに移動",
-            command=self.destroy
-        )
+        button_change = tk.Button(self, text="メインウィンドウに移動", command=self.destroy)
         button_change.pack()
 
         set_timetable_button = tk.Button(

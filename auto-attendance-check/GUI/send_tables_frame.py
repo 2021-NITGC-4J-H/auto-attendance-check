@@ -7,7 +7,8 @@ import glob
 import toml
 import os
 
-class SendTablesFrame(tk.Frame):
+
+class SendFrame(tk.Frame):
     """
     mainframeの「時間割」 -> subframeの「時間割の新規登録」
     ボタンが押された時に作成するフレーム
@@ -29,7 +30,7 @@ class SendTablesFrame(tk.Frame):
             height=2,
             relief=tk.RAISED,
             cursor="hand2",
-            command=self.send_file,
+            command=self.transport,
         )
         self.complete_button.place(x=600, y=500)
 
@@ -48,15 +49,17 @@ class SendTablesFrame(tk.Frame):
         self.cancel_button.place(x=460, y=500)
 
         self.title_label = tk.Label(
-            self, text="ラズパイへ送信したいフォルダを選択してください", font=("Arial", 14),
+            self,
+            text="ラズパイへ送信したいフォルダを選択してください",
+            font=("Arial", 14),
         )
         self.title_label.place(x=170, y=30)
 
         self.explanation_label = tk.Label(
             self,
-            text =  "class_table : タイムテーブル（授業開始終了時刻）\n" + 
-                    "photo_table : ラズパイ自動撮影用ファイル\n" + 
-                    "subjects : 授業時間割（科目）\n",
+            text="class_table : タイムテーブル（授業開始終了時刻）\n"
+            + "photo_table : ラズパイ自動撮影用ファイル\n"
+            + "subjects : 授業時間割（科目）\n",
             font=("Arial", 10),
             anchor=tk.W,
         )
@@ -70,9 +73,15 @@ class SendTablesFrame(tk.Frame):
         self.check_value_photo = tk.BooleanVar()
         self.check_value_subjects = tk.BooleanVar()
 
-        self.class_table_check = tk.Checkbutton(self, text=self.folder1, var=self.check_value_class, font=("Arial", 14))
-        self.photo_table_check = tk.Checkbutton(self, text=self.folder2, var=self.check_value_photo, font=("Arial", 14))
-        self.subjects_check = tk.Checkbutton(self, text=self.folder3, var=self.check_value_subjects, font=("Arial", 14))
+        self.class_table_check = tk.Checkbutton(
+            self, text=self.folder1, var=self.check_value_class, font=("Arial", 14)
+        )
+        self.photo_table_check = tk.Checkbutton(
+            self, text=self.folder2, var=self.check_value_photo, font=("Arial", 14)
+        )
+        self.subjects_check = tk.Checkbutton(
+            self, text=self.folder3, var=self.check_value_subjects, font=("Arial", 14)
+        )
 
         self.class_table_check.place(x=300, y=150)
         self.photo_table_check.place(x=300, y=200)
@@ -80,18 +89,18 @@ class SendTablesFrame(tk.Frame):
 
         self.grid(row=0, column=0, sticky="nsew")
 
-    def send_file(self):
+    def transmit(self):
         """
         チェックリストにチェックされたフォルダ内のファイルを全てラズパイに送信する
         """
-        
+
         # チェックボックスの値を読み込む
         check1 = self.check_value_class.get()
         check2 = self.check_value_photo.get()
         check3 = self.check_value_subjects.get()
 
         if check1 or check2 or check3:
-            
+
             # raspberrypiのファイルのパスワードファイルの読み込み
             with open("raspberrypi_key.toml", mode="rt", encoding="UTF-8") as fp:
                 data = toml.load(fp)
@@ -99,14 +108,18 @@ class SendTablesFrame(tk.Frame):
             # SSHでラズパイに接続
             client = paramiko.SSHClient()
             client.set_missing_host_key_policy(paramiko.WarningPolicy)
-            
+
             try:
-                client.connect(data["IP_ADDRESS"], username=data["USER_NAME"], password=data["PASS_WORD"], timeout=5.0)
-            except:
+                client.connect(
+                    data["IP_ADDRESS"],
+                    username=data["USER_NAME"],
+                    password=data["PASS_WORD"],
+                    timeout=5.0,
+                )
+            except Exception:
                 messagebox.showerror("エラー", "ラズパイに接続できませんでした")
                 self.toplevel.destroy()
                 return
-            
 
             # フォルダ内のファイルを転送
             if self.check_value_class.get():
@@ -114,8 +127,15 @@ class SendTablesFrame(tk.Frame):
                 try:
                     sftp_connection = client.open_sftp()
                     for filename in name_list:
-                        sftp_connection.put("./"+self.folder1+"/"+filename+".toml", "/home/pi/.config/aac/"+self.folder1+"/"+ filename+".toml")
-                except:
+                        sftp_connection.put(
+                            "./" + self.folder1 + "/" + filename + ".toml",
+                            "/home/pi/.config/aac/"
+                            + self.folder1
+                            + "/"
+                            + filename
+                            + ".toml",
+                        )
+                except Exception:
                     messagebox.showerror("エラー", self.folder1 + "の送信に失敗しました")
                     self.toplevel.destroy()
                     return
@@ -124,8 +144,15 @@ class SendTablesFrame(tk.Frame):
                 try:
                     sftp_connection = client.open_sftp()
                     for filename in name_list:
-                        sftp_connection.put("./"+self.folder2+"/"+filename+".txt", "/home/pi/.config/aac/"+self.folder2+"/"+ filename+".txt")
-                except:
+                        sftp_connection.put(
+                            "./" + self.folder2 + "/" + filename + ".txt",
+                            "/home/pi/.config/aac/"
+                            + self.folder2
+                            + "/"
+                            + filename
+                            + ".txt",
+                        )
+                except Exception:
                     messagebox.showerror("エラー", self.folder2 + "の送信に失敗しました")
                     self.toplevel.destroy()
                     return
@@ -134,18 +161,25 @@ class SendTablesFrame(tk.Frame):
                 try:
                     sftp_connection = client.open_sftp()
                     for filename in name_list:
-                        sftp_connection.put("./"+self.folder3+"/"+filename+".toml", "/home/pi/.config/aac/"+self.folder3+"/"+ filename+".toml")
-                except:
+                        sftp_connection.put(
+                            "./" + self.folder3 + "/" + filename + ".toml",
+                            "/home/pi/.config/aac/"
+                            + self.folder3
+                            + "/"
+                            + filename
+                            + ".toml",
+                        )
+                except Exception:
                     messagebox.showerror("エラー", self.folder3 + "の送信に失敗しました")
                     self.toplevel.destroy()
                     return
-            
+
             client.close()
             messagebox.showinfo("成功", "送信に成功しました")
-        
+
         self.toplevel.destroy()
         return
-    
+
     def file_search(self, dir: str) -> list:
         """
         引数に指定したディレクトリ配下のファイルを探す関数

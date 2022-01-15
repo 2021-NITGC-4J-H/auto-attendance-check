@@ -11,6 +11,7 @@ import subjects_frame
 import send_tables_frame
 import set_calendar_frame
 
+
 def reference_attend_data():
     """
     「出席状況」button was pushed
@@ -31,10 +32,13 @@ def take_photo_command():
         data = toml.load(fp)
 
     # 呼び出すコマンド
-    cmd = 'aac take_photo gui'
+    cmd = "aac take_photo gui"
 
     ssh.connect_SSH(
-        IP_ADDRESS=data["IP_ADDRESS"], USER_NAME=data["USER_NAME"], PASSWORD=data["PASS_WORD"], CMD=cmd
+        IP_ADDRESS=data["IP_ADDRESS"],
+        USER_NAME=data["USER_NAME"],
+        PASSWORD=data["PASS_WORD"],
+        CMD=cmd,
     )
 
 
@@ -61,7 +65,7 @@ def set_calender():
     new_window = tk.Toplevel()
     new_window.geometry("750x680")
 
-    set_calendar_frame.SetCalendarFrame(new_window)
+    set_calendar_frame.DateFrame(new_window)
 
 
 def looktimetable():
@@ -84,6 +88,7 @@ def configuration(mysettings: owner.Owner):
 
     configuration_frame.ConfigurationFrame(new_window, mysettings)
 
+
 def set_subjects():
     """
     「時間割」の科目名を設定
@@ -91,7 +96,8 @@ def set_subjects():
     new_window = tk.Toplevel()
     new_window.geometry("750x600")
 
-    subjects_frame.SubjectsFrame(new_window)
+    subjects_frame.SubjectFrame(new_window)
+
 
 def send_tables():
     """
@@ -100,4 +106,4 @@ def send_tables():
     new_window = tk.Toplevel()
     new_window.geometry("750x600")
 
-    send_tables_frame.SendTablesFrame(new_window)
+    send_tables_frame.SendFrame(new_window)

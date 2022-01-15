@@ -135,7 +135,7 @@ class ConfigurationFrame(tk.Frame):
 
         # 個人設定の変更の確認
         ret = messagebox.askyesno("確認", "この内容で設定を変更しますか？")
-        if ret == False:
+        if ret is False:
             return
 
         new_interval = change[3].get()

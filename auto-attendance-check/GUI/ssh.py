@@ -22,17 +22,17 @@ def connect_SSH(IP_ADDRESS: str, USER_NAME: str, PASSWORD: str, CMD: str):
     CMD : str list
         実行命令をまとめたリスト
     """
-    
+
     # SSH接続
     client = paramiko.SSHClient()
     client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 
     try:
         client.connect(IP_ADDRESS, username=USER_NAME, password=PASSWORD, timeout=3.9)
-    except:
+    except Exception:
         messagebox.showerror("エラー", "ラズパイに接続できませんでした")
         return
-    
+
     # コマンド呼び出し
     stdin, stdout, stderr = client.exec_command(CMD)
 
