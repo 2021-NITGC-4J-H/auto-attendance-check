@@ -1,9 +1,10 @@
 # connecting ssh
 
 import paramiko
+from tkinter import messagebox
 
 
-def connect_SSH(IP_ADDRESS, USER_NAME, PASSWORD, CMD):
+def connect_SSH(IP_ADDRESS: str, USER_NAME: str, PASSWORD: str, CMD: list):
     """
     指定機器へSSH接続する
 
@@ -25,7 +26,12 @@ def connect_SSH(IP_ADDRESS, USER_NAME, PASSWORD, CMD):
     # SSH接続
     client = paramiko.SSHClient()
     client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-    client.connect(IP_ADDRESS, username=USER_NAME, password=PASSWORD)
+    try:
+        client.connect(IP_ADDRESS, username=USER_NAME, password=PASSWORD)
+    except:
+        messagebox.showerror("エラー", "ラズパイに接続できませんでした")
+        return
+        
 
     # コマンド呼び出し
     stdin, stdout, stderr = client.exec_command(CMD)

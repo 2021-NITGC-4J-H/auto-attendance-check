@@ -19,18 +19,16 @@ class LookTimetable(tk.Frame):
         self.toplevel = new_window
 
         # 時間割フォルダ内のファイル情報を取得する
-        path_list, name_list, num = self.file_search("./class_table")
+        name_list, num = self.file_search("./class_table")
 
-        self.titlelabel = tk.Label(self, text="クリックした時間割を表示します")
+        self.titlelabel = tk.Label(self, text="クリックしたタイムテーブルを表示します")
         self.titlelabel.place(x=300, y=30)
 
         self.name_text = []
         self.name_label = []
         self.selectbox = []
 
-        print(num)
         for i in range(0, num):
-            print(i)
             self.name_text.append(tk.StringVar(self))
             self.name_text[i].set(name_list[i])
             self.name_label.append(
@@ -94,7 +92,6 @@ class LookTimetable(tk.Frame):
         引数に指定したディレクトリ配下のファイルを探す関数
 
         return:
-            path_list: パス名のリスト
             name_list: (拡張子なしの)ファイル名のリスト
             num: ファイル数
         """
@@ -108,9 +105,8 @@ class LookTimetable(tk.Frame):
             file = os.path.basename(i)
             name, ext = os.path.splitext(file)
             name_list.append(name)
-            print(str(i) + i)
 
-        return path_list, name_list, num
+        return name_list, num
 
     def look_table(self, tablename: str) -> bool:
         """

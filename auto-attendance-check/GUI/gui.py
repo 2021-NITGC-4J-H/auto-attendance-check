@@ -109,7 +109,6 @@ timetable_button = tk.Button(
     relief=RAISED,
     cursor="hand2",
     command=lambda: sub_frame.SubFrame(window, frame)
-    # command=changeSubFrame
 )
 timetable_button.pack(padx=5, pady=10, side=tk.LEFT)
 

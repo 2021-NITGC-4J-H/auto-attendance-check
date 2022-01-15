@@ -1,6 +1,7 @@
 # maniplation.py > Configuration() により呼び出されるフレーム
 
 import tkinter as tk
+from tkinter import messagebox
 import owner
 
 
@@ -131,6 +132,12 @@ class ConfigurationFrame(tk.Frame):
             True : 問題なく設定情報を更新できた場合
             False : 撮影間隔に数字以外が指定された場合
         """
+
+        # 個人設定の変更の確認
+        ret = messagebox.askyesno("確認", "この内容で設定を変更しますか？")
+        if ret == False:
+            return
+
         new_interval = change[3].get()
         if new_interval == "":
             new_interval = -1

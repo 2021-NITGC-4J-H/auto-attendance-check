@@ -5,6 +5,8 @@ import timetable_frame
 import look_timetable
 import owner
 import configuration_frame
+import subjects_frame
+import send_tables_frame
 import tkinter as tk
 
 # ボタンクリック時の操作
@@ -23,19 +25,6 @@ def reference_attend_data():
 def take_photo_command():
     """
     「教室撮影」button was pushed
-
-    Notes
-        powershellを開き、ラズパイにSSH接続
-        →ラズパイへ撮影を命令 撮影した教室の画像を画像処理部の画像フォルダに格納する
-        →撮影した画像はPC側にも送信 GUI操作者による確認を可能に
-        →ラズパイへ画像解析を命令
-        →ラズパイとのSSH接続を終了
-
-    Variable
-    --------
-    'rpistill -o /home/pi/rpicamera/rpicamera.sh'
-    '画像解析部の呼び出し'
-    (/home/pi/rpicamera/rpicamera.sh : 画像撮影命令が記述されているファイル)
     """
 
     # raspberrypiのファイルのパスワードファイルの読み込み
@@ -43,7 +32,7 @@ def take_photo_command():
         l_strip = [s.strip() for s in fp.readlines()]
 
     # 呼び出すコマンド
-    cmd = 'python core/main.py "TakePhoto"'
+    cmd = 'aac take_photo gui'
 
     ssh.connect_SSH(
         IP_ADDRESS=l_strip[0], USER_NAME=l_strip[1], PASSWORD=l_strip[2], CMD=cmd
@@ -52,11 +41,11 @@ def take_photo_command():
 
 def set_timetable():
     """
-    「時間割」button was pushed
+    「タイムテーブルの新規作成」button was pushed
 
     Notes
         新しく時間割を作成する
-        「時間割の名前」と「時間割」を新たなウィンドウで入力させ、
+        「タイムテーブルの名前」と「タイムテーブル」を新たなウィンドウで入力させ、
         指定したフォーマットでテキストファイルに出力する。
     """
 
@@ -68,14 +57,14 @@ def set_timetable():
 
 def set_calender():
     """
-    「カレンダー」button was pushed
+    「タイムテーブルの指定」button was pushed
     """
     pass
 
 
 def looktimetable():
     """
-    設定した「時間割」を見る
+    「タイムテーブル」を見る
     """
     new_window = tk.Toplevel()
     new_window.geometry("750x680")
@@ -93,4 +82,20 @@ def configuration(mysettings: owner.Owner):
 
     configuration_frame.ConfigurationFrame(new_window, mysettings)
 
-    pass
+def set_subjects():
+    """
+    「時間割」の科目名を設定
+    """
+    new_window = tk.Toplevel()
+    new_window.geometry("750x600")
+
+    subjects_frame.SubjectsFrame(new_window)
+
+def send_tables():
+    """
+    作成したタイムテーブルや時間割のラズパイへの送信
+    """
+    new_window = tk.Toplevel()
+    new_window.geometry("750x600")
+
+    send_tables_frame.SendTablesFrame(new_window)
