@@ -37,7 +37,7 @@ def face_detection(image: Image) -> bool:
     ----------
     image : np.ndarray
         解析を行う画像
-    
+
     Returns
     -------
     bool : 顔が検出されたらtrue、されなかったらfalse
@@ -85,7 +85,7 @@ def desk_analysis(image: Image):
     -------
     result
         解析した結果
-    
+
     Note
     ----
     - Dead code
