@@ -14,6 +14,7 @@ class4 = "比較社会史"
 class1 = "応用数学Ⅱ"
 class2 = "LEI工学Ⅱ"
 class3 = "電磁気学"
+class4 = ""
 
 [Thursday]
 class1 = "離散数学"
@@ -25,7 +26,16 @@ class4 = "応用物理"
 class1 = "信号処理"
 class2 = "システムプログラム"
 class3 = "電子情報工学実験実習"
+class4 = ""
 
 [Saturday]
+class1 = ""
+class2 = ""
+class3 = ""
+class4 = ""
 
 [Sunday]
+class1 = ""
+class2 = ""
+class3 = ""
+class4 = ""

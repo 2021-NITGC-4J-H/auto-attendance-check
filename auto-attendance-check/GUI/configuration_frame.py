@@ -14,13 +14,13 @@ class ConfigurationFrame(tk.Frame):
         super().__init__(newWindow, width=500, height=550)
 
         self.username_text = tk.StringVar(self)
-        self.username_text.set("ユーザーネーム : " + mysettings.username)
+        self.username_text.set(f"ユーザーネーム : {mysettings.username}")
         self.schoolname_text = tk.StringVar(self)
         self.schoolname_text.set("学校名 : " + mysettings.schoolname)
         self.classname_text = tk.StringVar(self)
-        self.classname_text.set("クラス名 : " + mysettings.classname)
+        self.classname_text.set(f"クラス名 : {mysettings.classname}")
         self.interval_text = tk.StringVar(self)
-        self.interval_text.set("授業中の撮影間隔 : " + str(mysettings.interval))
+        self.interval_text.set(f"授業中の撮影間隔 : {str(mysettings.interval)}")
 
         self.username_label = tk.Label(self, textvariable=self.username_text)
         self.username_label.pack(padx=170, pady=20, side=tk.TOP)
@@ -157,10 +157,10 @@ class ConfigurationFrame(tk.Frame):
             interval=new_interval,
         )
 
-        self.username_text.set("ユーザーネーム : " + mysettings.username)
-        self.schoolname_text.set("学校名 : " + mysettings.schoolname)
-        self.classname_text.set("クラス名 : " + mysettings.classname)
-        self.interval_text.set("授業中の撮影間隔 : " + str(mysettings.interval))
+        self.username_text.set(f"ユーザーネーム : {mysettings.username}")
+        self.schoolname_text.set(f"学校名 : {mysettings.schoolname}")
+        self.classname_text.set(f"クラス名 : {mysettings.classname}")
+        self.interval_text.set(f"授業中の撮影間隔 : {str(mysettings.interval)}")
 
         edit_frame.destroy()
 

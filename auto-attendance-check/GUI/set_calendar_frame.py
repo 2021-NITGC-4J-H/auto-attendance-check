@@ -124,9 +124,9 @@ class DateFrame(tk.Frame):
         if events:
             for i in range(0, 3):
                 if int(date_list[i]) < 10:
-                    date_list[i] = "0" + date_list[i]
+                    date_list[i] = f"0{date_list[i]}"
 
-            check_date = "20" + date_list[2] + "-" + date_list[0] + "-" + date_list[1]
+            check_date = f"20{date_list[2]}-{date_list[0]}-{date_list[1]}"
             i = 0
             # 取得したイベントについて
             for event in events:

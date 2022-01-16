@@ -30,7 +30,7 @@ class SendFrame(tk.Frame):
             height=2,
             relief=tk.RAISED,
             cursor="hand2",
-            command=self.transport,
+            command=self.transmit,
         )
         self.complete_button.place(x=600, y=500)
 
@@ -114,7 +114,7 @@ class SendFrame(tk.Frame):
                     data["IP_ADDRESS"],
                     username=data["USER_NAME"],
                     password=data["PASS_WORD"],
-                    timeout=5.0,
+                    timeout=3.9,
                 )
             except Exception:
                 messagebox.showerror("エラー", "ラズパイに接続できませんでした")
@@ -123,54 +123,42 @@ class SendFrame(tk.Frame):
 
             # フォルダ内のファイルを転送
             if self.check_value_class.get():
-                name_list = self.file_search("./" + self.folder1)
+                name_list = self.file_search(f"./{self.folder1}")
                 try:
                     sftp_connection = client.open_sftp()
                     for filename in name_list:
                         sftp_connection.put(
-                            "./" + self.folder1 + "/" + filename + ".toml",
-                            "/home/pi/.config/aac/"
-                            + self.folder1
-                            + "/"
-                            + filename
-                            + ".toml",
+                            f"./{self.folder1}/{filename}.toml",
+                            f"/home/pi/.config/aac/{self.folder1}/{filename}.toml",
                         )
                 except Exception:
-                    messagebox.showerror("エラー", self.folder1 + "の送信に失敗しました")
+                    messagebox.showerror("エラー", f"{self.folder1}の送信に失敗しました")
                     self.toplevel.destroy()
                     return
             if self.check_value_photo.get():
-                name_list = self.file_search("./" + self.folder2)
+                name_list = self.file_search(f"./{self.folder2}")
                 try:
                     sftp_connection = client.open_sftp()
                     for filename in name_list:
                         sftp_connection.put(
-                            "./" + self.folder2 + "/" + filename + ".txt",
-                            "/home/pi/.config/aac/"
-                            + self.folder2
-                            + "/"
-                            + filename
-                            + ".txt",
+                            f"./{self.folder2}/{filename}.toml",
+                            f"/home/pi/.config/aac/{self.folder2}/{filename}.toml",
                         )
                 except Exception:
-                    messagebox.showerror("エラー", self.folder2 + "の送信に失敗しました")
+                    messagebox.showerror("エラー", f"{self.folder1}の送信に失敗しました")
                     self.toplevel.destroy()
                     return
             if self.check_value_subjects.get():
-                name_list = self.file_search("./" + self.folder3)
+                name_list = self.file_search(f"./{self.folder3}")
                 try:
                     sftp_connection = client.open_sftp()
                     for filename in name_list:
                         sftp_connection.put(
-                            "./" + self.folder3 + "/" + filename + ".toml",
-                            "/home/pi/.config/aac/"
-                            + self.folder3
-                            + "/"
-                            + filename
-                            + ".toml",
+                            f"./{self.folder3}/{filename}.toml",
+                            f"/home/pi/.config/aac/{self.folder3}/{filename}.toml",
                         )
                 except Exception:
-                    messagebox.showerror("エラー", self.folder3 + "の送信に失敗しました")
+                    messagebox.showerror("エラー", f"{self.folder1}の送信に失敗しました")
                     self.toplevel.destroy()
                     return
 
@@ -188,7 +176,7 @@ class SendFrame(tk.Frame):
             name_list: (拡張子なしの)ファイル名のリスト
         """
         # 指定dir内のすべてのファイルを取得
-        path_list = glob.glob(dir + "/*")
+        path_list = glob.glob(f"{dir}/*")
 
         # パスリストからファイル名を抽出
         name_list = []

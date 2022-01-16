@@ -114,13 +114,21 @@ class SubjectFrame(tk.Frame):
         if ret is False:
             return
 
+        # 最大時間数を計算
+        self.class_max = 0
+        for i in range(0,7):
+            j = 0
+            while (str(self.subject[i][j].get()) != "") and (j < 8):
+                j += 1
+            if j > self.class_max:
+                self.class_max = j
+
         self.write_toml = {}
         self.toml_list = {}
         for i in range(0, 7):
             self.toml_list = {}
-            for j in range(0, 8):
-                if self.subject[i][j].get() != "":
-                    self.toml_list[f"class{(j+1)}"] = str(self.subject[i][j].get())
+            for j in range(0, self.class_max):
+                self.toml_list[f"class{(j+1)}"] = str(self.subject[i][j].get())
             self.write_toml[self.day_name[i]] = self.toml_list
 
         toml.dump(
