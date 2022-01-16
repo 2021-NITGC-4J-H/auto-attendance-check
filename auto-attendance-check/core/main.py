@@ -1,6 +1,8 @@
 from enum import Enum, auto
 import fire
-
+from analysis import face_detection, take_photo
+from export import ClassMatesRegister
+from change_crontab import update_schedule
 
 class SaveImage(Enum):
     """
@@ -26,7 +28,7 @@ class ExportDataType(Enum):
     ----------
     CSV
         csvの出欠状況ファイルを選択
-    JSOn
+    JSON
         jsonの出欠状況ファイルを選択
     """
     CSV = auto()
@@ -42,7 +44,7 @@ class Commands(object):
     ----
     GUIの操作に対応させて必要なコマンドを作っていく
     """
-    def take_photo(save_image: SaveImage = SaveImage.LOCAL):
+    def take_photo(save_image: SaveImage = SaveImage.LOCAL, save_path: str = "~/Picture/"):
         """
         写真を撮影
 
@@ -51,6 +53,7 @@ class Commands(object):
         save_image : SaveImage
             画像の保存先指定する
         """
+        img = take_photo()
         if save_image == SaveImage.LOCAL:
             pass
         elif save_image == SaveImage.GUI:
@@ -60,6 +63,7 @@ class Commands(object):
         """
         撮影した画像の解析を行う
         """
+        # res = face_detection(img)
         pass
 
     def sent_attend_date(data_type: ExportDataType):
@@ -67,13 +71,17 @@ class Commands(object):
         この関数が実行された時点での最新出欠状況をGUIclientにSSHで送信する
         引数でjson,csvを選択する
         """
-        pass
+        regi = ClassMatesRegister(number_of_students=0)
+        if data_type == ExportDataType.CSV:
+            regi.exprot_csv()
+        elif data_type == ExportDataType.JSON:
+            regi.export_json()
 
     def update_crontab():
         """
         google calendar からこの関数が実行されたときの日にちの時間割を取得し、crontabを変更する
         """
-        pass
+        update_schedule()
 
 
 def main():
