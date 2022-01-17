@@ -3,8 +3,8 @@
 import tkinter as tk
 import toml
 import paramiko
-import os
-from PIL import Image, ImageTk
+from PIL import Image
+from tkinter import messagebox
 import timetable_frame
 import look_timetable
 import owner
@@ -12,7 +12,7 @@ import configuration_frame
 import subjects_frame
 import send_tables_frame
 import set_calendar_frame
-from tkinter import messagebox
+import reference_attend_frame
 
 
 def reference_attend_data():
@@ -22,7 +22,10 @@ def reference_attend_data():
     powershellを開き、出席データを格納している機器へアクセス
 
     """
-    pass
+    new_window = tk.Toplevel()
+    new_window.geometry("750x600")
+
+    reference_attend_frame.ReferenceAttendFrame(new_window)
 
 
 def take_photo_command(background: tk.PhotoImage):
