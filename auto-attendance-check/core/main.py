@@ -13,7 +13,7 @@ import cv2
 # このプロジェクトで作成したライブラリ
 import core
 import core.analysis
-import core.google_calendar
+import core.change_crontab
 from core.export import ClassMatesRegister
 
 
@@ -58,7 +58,7 @@ class Commands(object):
     ----
     GUIの操作に対応させて必要なコマンドを作っていく
     """
-    def take_photo(save_image: SaveImage = SaveImage.LOCAL, save_path: str = "~/aac/Picture"):
+    def take_photo(save_image: SaveImage = SaveImage.LOCAL, save_path: str = "~/aac/Photos"):
         """
         写真を撮影
 
@@ -74,7 +74,7 @@ class Commands(object):
         if save_image == SaveImage.LOCAL:
             cv2.imwrite(f"{save_path}/{datetime.now().strftime(r'%Y-%m-%d%a-%H:%M')}.jpg", img)
         elif save_image == SaveImage.GUI:
-            cv2.imwrite(f"{save_path}/latest.jpg", img)
+            cv2.imwrite(f"{save_path}/outgui.jpg", img)
 
     def analysis():
         """
@@ -102,7 +102,7 @@ class Commands(object):
         """
         google calendar からこの関数が実行されたときの日にちの時間割を取得し、crontabを変更する
         """
-        core.google_calendar.update_schedule()
+        core.change_crontab.update_schedule()
 
 
 def main():
