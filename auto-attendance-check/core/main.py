@@ -30,6 +30,7 @@ class SaveImage(Enum):
     LOCAL
         撮影した画像をローカルフォルダに保存する
     """
+
     GUI = auto()
     LOCAL = auto()
 
@@ -45,6 +46,7 @@ class ExportDataType(Enum):
     JSON
         jsonの出欠状況ファイルを選択
     """
+
     CSV = auto()
     JSON = auto()
 
