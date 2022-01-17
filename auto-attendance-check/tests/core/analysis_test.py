@@ -9,7 +9,7 @@ from core.analysis import face_detection, split_image
 sys.path.append("../../..")
 
 def test_split_image():
-    image: str = glob.glob("auto-attendance-check/tests/core/images/test.JPG")
+    image: str = glob.glob("auto-attendance-check/tests/core/images/*.jpg")[0]
     image: np.ndarray = cv2.imread(image)
     height, width, _ =  image.shape
     areas = [
