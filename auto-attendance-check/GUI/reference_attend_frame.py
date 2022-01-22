@@ -153,7 +153,7 @@ class ReferenceAttendFrame(tk.Frame):
         # raspberrypiのファイルのパスワードファイルの読み込み
         with open("raspberrypi_key.toml", mode="rt", encoding="UTF-8") as fp:
             data = toml.load(fp)
-        """
+        
         # SSH接続
         client = paramiko.SSHClient()
         client.load_system_host_keys()
@@ -173,7 +173,7 @@ class ReferenceAttendFrame(tk.Frame):
             messagebox.showerror("エラー", "ファイルを取得できませんでした")
             client.close()
             return
-        """
+        
         # 出席・欠席...の回数を計算
         attend_data = self.culcu_num(subject)
         i = 0
@@ -230,7 +230,7 @@ class ReferenceAttendFrame(tk.Frame):
         attend_data = []
 
         for item in range(0,len(data)):
-            count = [0,0,0,0,0,0]
+            count = [0]*6
             for num in data[item]["attendance states"]:
                 if num == ATTEND:
                     count[0] += 1
@@ -245,7 +245,7 @@ class ReferenceAttendFrame(tk.Frame):
                 if num == ERROR:
                     count[5] += 1
             attend_data.append(
-                (data[item]["student number"], data[item]["name"], count[0], count[1], count[2], count[3], count[4], count[5])
+                (data[item]["student number"], data[item]["name"], *count)
             )
         
         return attend_data
