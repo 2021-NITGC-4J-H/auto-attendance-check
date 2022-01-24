@@ -56,7 +56,6 @@ def read(timefrom:str ="") -> Optional[list[T]]:
         .list(
             calendarId=calendar_id,
             timeMin=timefrom,
-            #timeMin=now,
             maxResults=10,
             singleEvents=True,
             orderBy="startTime",

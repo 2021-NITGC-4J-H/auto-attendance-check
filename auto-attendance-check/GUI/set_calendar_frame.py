@@ -134,7 +134,6 @@ class DateFrame(tk.Frame):
                 i = 0
                 # イベントの開始時刻をstartに格納
                 start = event["start"].get("dateTime", event["start"].get("date"))
-                print(event)
                 # イベントがその日の場合
                 if start == check_date:
                     has_set = event["summary"]
