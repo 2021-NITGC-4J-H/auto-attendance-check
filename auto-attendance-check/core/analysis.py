@@ -96,12 +96,12 @@ def split_image(image: Image, areas: List[Area]) -> List[Tuple[int, Image]]:
     ------
     切り出した複数枚の画像データ
     """
-    image_list = []
+    students_list: List[Tuple[int, Image]] = []
     for area in areas:
         [[sx, sy], [ex, ey]] = area.area
         cut = image[sx:ex, sy:ey]
-        image_list.append((area.id, cut))
-    return image_list
+        students_list.append((area.id, cut))
+    return students_list
 
 
 def face_detection(image: Image) -> bool:
@@ -169,8 +169,24 @@ def desk_analysis(image: Image):
     pass
 
 
-def analysis(image: Image, areas: List[Area]) -> List[Tuple[int, bool]]:
-    result = List[Tuple[int, bool]]
+def analysis(image: Image, area_data_path: str) -> List[Tuple[int, bool]]:
+    """
+    各学生の領域情報データのパスと撮影した画像を受け取り解析を行う
+
+    Parameters
+    ----------
+    image : Image
+        画像データ
+    area_data_path : str
+        各学生の領域データをもったtomlファイルのパス
+
+    Return
+    ------
+    data : List[Tuple[int, bool]]
+        それぞれの学生の学籍番号と出席状況のペア
+    """
+    result: List[Tuple[int, bool]] = []
+    areas: List[Area] = read_areas(area_data_path)
     students = split_image(image, areas)
     for student in students:
         id, img = student
