@@ -1,6 +1,7 @@
 # google calender
 
 import datetime
+from datetime import timedelta
 from re import T
 from googleapiclient.discovery import build
 import google.auth
@@ -34,7 +35,7 @@ def entry(date: list[int], table_name: str):
     service.events().insert(calendarId=calendar_id, body=event).execute()
 
 
-def read(num: int) -> Optional[list[T]]:
+def read(timefrom:str ="") -> Optional[list[T]]:
     """
     カレンダーの現在からの10件の予定を取得する
 
@@ -45,13 +46,18 @@ def read(num: int) -> Optional[list[T]]:
     calendar_id, gapi_creds = auth()
     service = build("calendar", "v3", credentials=gapi_creds)
 
-    now = datetime.datetime.utcnow().isoformat() + "Z"
+    if timefrom == "":
+        timefrom = datetime.datetime.utcnow().isoformat() + "Z"
+    else:
+        timefrom = (datetime.datetime.strptime(timefrom, '%Y-%m-%d') - timedelta(1)).isoformat()+'Z'
+
     events_result = (
         service.events()
         .list(
             calendarId=calendar_id,
-            timeMin=now,
-            maxResults=num,
+            timeMin=timefrom,
+            #timeMin=now,
+            maxResults=10,
             singleEvents=True,
             orderBy="startTime",
         )
