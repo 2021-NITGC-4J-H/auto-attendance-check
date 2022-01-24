@@ -50,7 +50,7 @@ class Area:
     def __init__(self, id: int, area: List[List[int]]) -> None:
         self.id = id
         self.area = area
-    
+
     def __str__(self) -> str:
         return f"'id': {self.id}, 'area': {self.area}"
 
