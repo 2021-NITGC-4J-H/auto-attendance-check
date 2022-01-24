@@ -29,6 +29,7 @@ def take_photo() -> Image:
     cap.release()
     return image
 
+
 def split_image(image: Image, areas: list) -> list:
     """
     画像を領域ごとに切り出して分割
@@ -47,7 +48,7 @@ def split_image(image: Image, areas: list) -> list:
             [[width // 2, height // 2], [width, height]]
         ]
         ```
-    
+
     Return
     ------
     切り出した複数枚の画像データ

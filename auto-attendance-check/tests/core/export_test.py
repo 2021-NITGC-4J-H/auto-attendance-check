@@ -66,6 +66,7 @@ def test_export_excel_csv():
     os.remove(f"{cmr.file_path}.csv")
 """
 
+
 def test_export_json():
     cmr = ClassMatesRegister(3)
     cmr.export_json()
