@@ -93,7 +93,6 @@ class ClassMatesRegister:
             for students_number in range(1, number_of_students + 1)
         ]
 
-
     def update(self, datas: List[bool]) -> None:
         for data, new in zip(self.datas, datas):
             top: str = data["attendance states"].pop()
@@ -106,7 +105,6 @@ class ClassMatesRegister:
                 data["attendance states"].append(AttendanceState.LATENESS.value)
             else:
                 data["attendance states"].append(top)
-
 
     def insert_data(self, datas: List[AttendanceState]) -> None:
         """
