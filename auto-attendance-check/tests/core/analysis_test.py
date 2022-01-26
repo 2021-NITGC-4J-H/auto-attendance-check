@@ -2,22 +2,25 @@ import sys
 import glob
 
 import cv2
-import numpy as np
 
-from core.analysis import face_detection, split_image
+from core.analysis import face_detection, split_image, read_areas, Image, Area
 
 sys.path.append("../../..")
+
+def test_read_areas():
+    read_areas("auto-attendance-check/tests/core/configs/area_data.toml")
+    assert True
 
 
 def test_split_image():
     image: str = glob.glob("auto-attendance-check/tests/core/images/*.jpg")[0]
-    image: np.ndarray = cv2.imread(image)
+    image: Image = cv2.imread(image)
     height, width, _ = image.shape
     areas = [
-        [[0, 0], [width // 2, height // 2]],
-        [[width // 2, 0], [width, height // 2]],
-        [[0, height // 2], [width // 2, height]],
-        [[width // 2, height // 2], [width, height]],
+        Area(1, [[0, 0], [width // 2, height // 2]]),
+        Area(2, [[width // 2, 0], [width, height // 2]]),
+        Area(3, [[0, height // 2], [width // 2, height]]),
+        Area(4, [[width // 2, height // 2], [width, height]]),
     ]
     _ = split_image(image, areas)
     assert True
