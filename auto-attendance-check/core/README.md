@@ -1,5 +1,17 @@
 # core
 
+## install
+
+```sh
+pip install -e .
+```
+
+### reinstall
+
+```sh
+pip install --force-reinstall -e .
+```
+
 ## 使用方法
 
 ```sh
